@@ -1,0 +1,15 @@
+# Données runtime du serveur (générées au premier lancement)
+data/
+admin-data.json
+
+# Binaires / journaux
+*.log
+*.exe
+cloudflared.err.log
+
+# Sorties QR locales
+qrcodes/
+
+# Périphériques
+Thumbs.db
+.DS_Store
