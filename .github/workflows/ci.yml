@@ -27,6 +27,9 @@ jobs:
           done
           exit $fail
 
+      - name: Synchronisation content/ ↔ js/data.js
+        run: node tools/build-data.mjs --check
+
       - name: JSON valides
         run: |
           fail=0

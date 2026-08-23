@@ -20,20 +20,54 @@ Ouvrez une [issue](https://github.com/ducybrobin-ux/jpd/issues) en précisant :
    ```
 
 4. Testez au moins : démarrage via `demarrer_serveur.cmd`, une balise complète (énigme → son → quiz), et le tableau de bord.
-5. Ouvrez une Pull Request décrivant le *pourquoi* de votre changement. La CI vérifie la syntaxe des modules.
+5. Ouvrez une Pull Request décrivant le *pourquoi* de votre changement. La CI vérifie la syntaxe des modules **et** la synchronisation `content/ ↔ js/data.js`.
 
-## Proposer du contenu pédagogique
+## Proposer du contenu pédagogique (architecture modulaire)
 
-Le contenu vit dans `js/data.js` :
-- **BIRDS** — les 8 découvertes du sentier (fiche : définition, antidote, 3 exemples, quiz)
-- **GUIDE** — les notions complémentaires
-- **BALISES** — positions, codes, énigmes
+Le contenu vit dans [`content/`](content/) — un fichier JSON par notion, avec métadonnées pédagogiques :
 
-Deux options :
-- passez par l'éditeur intégré (`/editeur`) et joignez le JSON exporté à votre issue/PR ;
-- ou éditez `js/data.js` directement en respectant la structure existante.
+```
+content/
+  manifest.json                     packs actifs
+  schemas/                          contrats JSON Schema (draft-07)
+  packs/biais-cognitifs/
+    pack.json                       identité du pack
+    decouvertes/01-confirmation.json   … une fiche par biais du sentier
+    guide/01-reciprocite.json          … les notions complémentaires
+    balises/B1.json                    … énigmes par niveau + tranches d'âge
+```
 
-Critères d'acceptation d'une nouvelle notion : définition exacte avec référence, antidote formulable par un enfant de 8 ans, exemples tirés du quotidien.
+Chaque notion porte un bloc `pedagogie` :
+
+```json
+"pedagogie": {
+  "ages": [6, 99],
+  "duree_min": 8,
+  "objectif": "Ce que l'enfant saura faire après la balise",
+  "programme": ["cycle 3", "cycle 4", "lycée"]
+}
+```
+
+et chaque niveau d'énigme sa tranche d'âge (`facile` 6-9 ans, `moyen` 10-13, `difficile` 14+) → le moteur peut adapter le parcours au profil.
+
+### Ajouter ou modifier une notion
+
+1. Créez/modifiez un fichier dans le pack (préfixe numérique = ordre d'affichage).
+2. Respectez le schéma correspondant dans `content/schemas/`.
+3. Régénérez et vérifiez :
+
+   ```cmd
+   node tools/build-data.mjs
+   node tools/build-data.mjs --check
+   ```
+
+   (`js/data.js` est **généré** — ne l'éditez jamais à la main ; SITE/TRAIL restent modifiables directement.)
+
+### Nouveau pack thématique ?
+
+Dupliquez la structure d'un pack, changez `pack.json`, ajoutez-le à `manifest.json` avec `"actif": true`. Le moteur affiche ce que contiennent les packs actifs — rien d'autre.
+
+Critères d'acceptation d'une nouvelle notion : définition exacte avec référence, antidote formulable par un enfant de 8 ans, exemples tirés du quotidien, objectif pédagogique explicite.
 
 ## Règles
 

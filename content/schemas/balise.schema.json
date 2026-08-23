@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "jdpbc/schemas/balise.schema.json",
+  "title": "Balise du sentier (position + énigmes par niveau)",
+  "type": "object",
+  "required": ["id", "bird", "code", "label", "enigmes"],
+  "additionalProperties": true,
+  "properties": {
+    "type": { "const": "balise" },
+    "version": { "type": "integer", "minimum": 1 },
+    "id": { "type": "string", "pattern": "^B[0-9]+$" },
+    "bird": { "type": "string", "description": "id de la découverte associée (doit exister dans le pack)" },
+    "code": { "type": "string", "description": "Code de validation saisi (ex. JDP-B1)" },
+    "label": { "type": "string" },
+    "x": { "type": "number", "description": "Position sur la carte (vue)" },
+    "y": { "type": "number" },
+    "lat": { "type": "number" },
+    "lng": { "type": "number" },
+    "hintImg": { "type": "string" },
+    "enigmes": {
+      "type": "object",
+      "required": ["facile", "moyen", "difficile"],
+      "properties": {
+        "facile":   { "$ref": "#/definitions/enigme" },
+        "moyen":    { "$ref": "#/definitions/enigme" },
+        "difficile":{ "$ref": "#/definitions/enigme" }
+      }
+    }
+  },
+  "definitions": {
+    "enigme": {
+      "type": "object",
+      "required": ["text", "reponses", "indice", "saviez", "ages"],
+      "properties": {
+        "text": { "type": "string", "minLength": 15 },
+        "reponses": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Variantes acceptées (comparaison sans accents ni majuscules)"
+        },
+        "indice": { "type": "string" },
+        "saviez": { "type": "string" },
+        "ages": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[min, max] — tranche d'âge recommandée pour ce niveau"
+        }
+      }
+    }
+  }
+}

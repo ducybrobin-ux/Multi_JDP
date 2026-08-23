@@ -3,6 +3,21 @@
 Toutes les évolutions notables de JDP_BC sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
 
+## [1.1.0] — 2026-08-23
+
+### Ajouté
+- **Architecture de contenu modulaire** : le contenu pédagogique vit dans `content/` — un fichier JSON par notion (8 découvertes, 10 notions du guide, 8 balises), regroupés en packs activables via `manifest.json`
+- Métadonnées pédagogiques par notion : `ages`, `duree_min`, `objectif`, `programme` ; tranches d'âge par niveau d'énigme (facile 6-9, moyen 10-13, difficile 14+)
+- Schémas JSON Schema (draft-07) dans `content/schemas/` comme contrat pour les contributions
+- `tools/build-data.mjs` : régénération validée de `js/data.js` depuis les packs + mode `--check` (contrôle de synchronisation exécuté en CI)
+- `tools/split-content.mjs` : migration one-shot de l'ancien `data.js` monolithique vers les packs
+
+### Modifié
+- `js/data.js` : la région contenu est désormais générée (marqueurs explicites) ; SITE, TRAIL et les fonctions moteur restent manuels
+
+### Compatibilité
+- Aucun changement d'interface runtime : éditeur, serveur, PDF et PWA fonctionnent à l'identique
+
 ## [1.0.0] — 2026-08-23
 
 ### Ajouté

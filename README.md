@@ -64,7 +64,12 @@ index.html          écran familles
 dashboard.html      tableau de bord organisateur
 editeur.html        éditeur de contenu (site, balises, découvertes, quiz)
 questionnaire.html  questionnaire testeurs
-js/                 data, moteur audio, boussole, QR, reconnaissance sonore, i18n…
+content/            CONTENU MODULAIRE : packs JSON par notion (+ schémas)
+  manifest.json       liste des packs actifs
+  packs/biais-cognitifs/   découvertes, guide, balises (un fichier = une carte)
+  schemas/             contrats JSON Schema (draft-07)
+js/                 moteur : data (généré), audio, boussole, QR, i18n…
+tools/              build-data.mjs (content/ → js/data.js) · split-content.mjs
 css/styles.css      styles (thème jour/nuit)
 audio/              fichiers audio optionnels
 docs/               fiche pédagogique PDF + sources du wiki
@@ -80,7 +85,7 @@ sw.js               service worker (mode hors-ligne complet)
 
 ## Contribuer
 
-Les contributions sont bienvenues ! Consultez [CONTRIBUTING.md](CONTRIBUTING.md) : signalement de bugs, propositions de notions ou d'énigmes, traductions… Chaque modification passe par la CI (vérification syntaxique des modules).
+Les contributions sont bienvenues ! Consultez [CONTRIBUTING.md](CONTRIBUTING.md) : signalement de bugs, propositions de notions ou d'énigmes, traductions… Le contenu pédagogique vit dans [`content/`](content/) (packs JSON modulaires, un fichier par notion, avec métadonnées d'âge et objectifs) ; la CI vérifie la syntaxe et la synchronisation avec `js/data.js`.
 
 ## Licences
 
