@@ -92,12 +92,13 @@ function sortedJsonFiles(dir) {
 function chargerContenu() {
   const manifest = readJson(path.join(CONTENT, "manifest.json"));
   const decouvertes = [], guide = [], balises = [];
-  const packsActifs = [];
+  const packsActifs = [], packsCharges = [];
   for (const entry of manifest.packs) {
     if (!entry.actif) continue;
     const dir = path.join(CONTENT, "packs", entry.id);
     const p = chargerPack(dir);
     packsActifs.push(p.pack.id);
+    packsCharges.push(p);
     decouvertes.push(...p.decouvertes);
     guide.push(...p.guide);
     balises.push(...p.balises);
@@ -107,7 +108,7 @@ function chargerContenu() {
   for (const b of balises) {
     if (!ids.has(b.bird)) fail(CONTENT, `balise ${b.id} → découverte inconnue « ${b.bird} »`);
   }
-  return { decouvertes, guide, balises, packsActifs };
+  return { decouvertes, guide, balises, packsActifs, packsCharges };
 }
 
 /* ---- Régénération de la région ---- */
@@ -133,6 +134,18 @@ const DIFFICULTIES = [
 ${M_FIN}`;
 }
 
+/* ---- Bundle par pack (pour l'atelier : atelier.html#content/bundles/<id>.json) ---- */
+function ecrireBundles(packsCharges) {
+  const dir = path.join(CONTENT, "bundles");
+  fs.mkdirSync(dir, { recursive: true });
+  for (const { pack, decouvertes, guide, balises } of packsCharges) {
+    const bundle = { $format: "jdpbc-pack", $version: 1, pack, decouvertes, guide, balises };
+    const file = path.join(dir, `${pack.id}.json`);
+    fs.writeFileSync(file, JSON.stringify(bundle, null, 2) + "\n", "utf8");
+    console.log("bundle :", path.relative(ROOT, file));
+  }
+}
+
 const checkOnly = process.argv.includes("--check");
 const src = fs.readFileSync(DATA, "utf8");
 const i1 = src.indexOf(M_DEBUT);
@@ -155,6 +168,7 @@ if (checkOnly) {
     `(${contenu.decouvertes.length} découvertes, ${contenu.guide.length} notions, ${contenu.balises.length} balises)`);
 } else {
   fs.writeFileSync(DATA, nouveau, "utf8");
+  ecrireBundles(contenu.packsCharges);
   console.log("js/data.js régénéré :", 
     `${contenu.decouvertes.length} découvertes, ${contenu.guide.length} notions, ${contenu.balises.length} balises`,
     `(packs : ${contenu.packsActifs.join(", ")})`);

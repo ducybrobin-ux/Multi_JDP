@@ -50,7 +50,16 @@ Chaque notion porte un bloc `pedagogie` :
 
 et chaque niveau d'énigme sa tranche d'âge (`facile` 6-9 ans, `moyen` 10-13, `difficile` 14+) → le moteur peut adapter le parcours au profil.
 
-### Ajouter ou modifier une notion
+### Ajouter ou modifier une notion — deux façons
+
+**🧩 Avec l'atelier (recommandé, sans coder) :** ouvrez [`/atelier`](atelier.html) (« Atelier de packs », aussi depuis l'éditeur). Créez le pack 🆕 ou partez de l'exemple ✨, remplissez les fiches (objectifs pédagogiques et tranches d'âge incluses), cliquez 🔎 puis 📥. Installez ensuite le bundle :
+
+```cmd
+node tools/import-pack.mjs mon-pack.jdpbc.json --actif
+node tools/build-data.mjs
+```
+
+**✏️ À la main :**
 
 1. Créez/modifiez un fichier dans le pack (préfixe numérique = ordre d'affichage).
 2. Respectez le schéma correspondant dans `content/schemas/`.

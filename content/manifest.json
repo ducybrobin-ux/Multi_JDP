@@ -1,9 +1,5 @@
-{
-  "version": 1,
+{"version": 1,
   "packs": [
-    {
-      "id": "biais-cognitifs",
-      "actif": true
-    }
+    { "id": "biais-cognitifs", "actif": true }
   ]
 }

@@ -42,6 +42,7 @@
 - 📄 **Fiche pédagogique PDF** générée depuis les données du jeu ([docs/fiche-pedagogique-JDP_BC.pdf](docs/fiche-pedagogique-JDP_BC.pdf)), disponible hors-ligne dans l'app (écran Guide)
 - 🏠 **Tableau de bord organisateur** : messages aux équipes, épreuves en direct, suivi GPS, urgences, QR d'accès imprimables
 - ✍️ **Éditeur intégré** (`/editeur`) pour adapter site, balises, énigmes, quiz et guide — export/import JSON
+- 🧩 **Atelier de packs** (`/atelier`) : créez votre propre pack de contenu (thème, notions, âges, quiz) depuis le navigateur, sans coder
 
 ## Démarrage rapide
 
@@ -63,13 +64,15 @@ Aucune dépendance à installer : tout fonctionne en local (PowerShell + navigat
 index.html          écran familles
 dashboard.html      tableau de bord organisateur
 editeur.html        éditeur de contenu (site, balises, découvertes, quiz)
+atelier.html        atelier de création de packs (export bundle → import-pack)
 questionnaire.html  questionnaire testeurs
-content/            CONTENU MODULAIRE : packs JSON par notion (+ schémas)
+content/            CONTENU MODULAIRE : packs JSON par notion (+ schémas + bundles)
   manifest.json       liste des packs actifs
   packs/biais-cognitifs/   découvertes, guide, balises (un fichier = une carte)
+  bundles/             bundle complet par pack (ouvert dans l'atelier)
   schemas/             contrats JSON Schema (draft-07)
 js/                 moteur : data (généré), audio, boussole, QR, i18n…
-tools/              build-data.mjs (content/ → js/data.js) · split-content.mjs
+tools/              build-data.mjs · import-pack.mjs · split-content.mjs
 css/styles.css      styles (thème jour/nuit)
 audio/              fichiers audio optionnels
 docs/               fiche pédagogique PDF + sources du wiki

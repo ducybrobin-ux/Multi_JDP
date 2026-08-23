@@ -5,9 +5,9 @@
    Wi-Fi du site, puis disponibles en zone blanche.
    ========================================================= */
 
-const VERSION = "jdpbc-v1";
-const CACHE = "jdpbc-core-v1";
-const RUNTIME = "jdpbc-runtime-v1";
+const VERSION = "jdpbc-v2";
+const CACHE = "jdpbc-core-v2";
+const RUNTIME = "jdpbc-runtime-v2";
 
 const PRECACHE = [
   "./",
@@ -27,8 +27,11 @@ const PRECACHE = [
   "js/board.js",
   "js/app.js",
   "dashboard.html",
+  "editeur.html",
   "questionnaire.html",
+  "atelier.html",
   "js/challenges.js",
+  "js/atelier.js",
   "docs/fiche-pedagogique-JDP_BC.pdf",
   "img/logo.svg",
   "img/icon.svg",

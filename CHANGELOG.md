@@ -3,6 +3,14 @@
 Toutes les évolutions notables de JDP_BC sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
 
+## [1.1.1] — 2026-08-23
+
+### Ajouté
+- **Atelier de packs** (`atelier.html` + `js/atelier.js`) : application embarquée de création de contenu — pack metadata, découvertes avec quiz et objectifs pédagogiques, notions du guide, balises avec énigmes par niveau d'âge, validation en direct, export/import de bundles
+- `tools/import-pack.mjs` : installe un bundle exporté par l'atelier (validation, éclatement en fichiers, mise à jour du manifest)
+- `tools/build-data.mjs` génère désormais aussi `content/bundles/<id>.json` (bundle complet par pack, ouvrable dans l'atelier)
+- Lien « Atelier de packs » dans l'éditeur ; atelier préchargé hors-ligne (cache SW v2)
+
 ## [1.1.0] — 2026-08-23
 
 ### Ajouté
