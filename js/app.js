@@ -427,7 +427,7 @@
     if (p && !currentTarget()) {
       $("map-note").textContent = "Bravo ! Votre famille est dans le palmarès de la semaine.";
     } else if (!Store.getSettings().night) {
-      $("map-note").textContent = "🌙 Les balises B7 et B8 (chouette & hibou) se révèlent la nuit.";
+      $("map-note").textContent = "🌙 Certaines balises nocturnes ne se révèlent qu'à la nuit tombée.";
     } else {
       $("map-note").textContent = "";
     }
@@ -2497,7 +2497,7 @@
       const status = $("contact-status");
       copyText(email);
       if (status) status.textContent = I18N.t("contact_copied");
-      const subject = "JDP_BC - " + (Store.getActive() ? Store.getActive().name : "");
+      const subject = "Multi JDP - " + (Store.getActive() ? Store.getActive().name : "");
       window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject);
     });
     updateOfflineUI();

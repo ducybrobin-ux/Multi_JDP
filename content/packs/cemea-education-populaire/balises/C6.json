@@ -5,10 +5,10 @@
   "bird": "jeu-role",
   "code": "JDP-C6",
   "label": "Le terrain des possibles",
-  "x": 388,
-  "y": 396,
-  "lat": 48.8566,
-  "lng": 2.3522,
+  "x": 287,
+  "y": 507,
+  "lat": 50.6314782,
+  "lng": 3.0559141,
   "hintImg": "",
   "enigmes": {
     "facile": {

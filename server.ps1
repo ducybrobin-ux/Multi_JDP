@@ -1347,6 +1347,48 @@ function Handle-Client([System.Net.Sockets.TcpClient]$Client, [System.IO.Stream]
         return
     }
 
+    # Proxy KML : permet à l'éditeur de carte d'importer une carte Google My Maps
+    # (le navigateur ne peut pas appeler google.com directement à cause du CORS).
+    if ($apiPath -ieq '/api/kml') {
+        if ($method -ne 'GET') {
+            Send-Response $Stream 405 "Method Not Allowed" "{`"ok`":false}" "application/json; charset=utf-8"
+            return
+        }
+        $query = ($target -split '\?')[1]
+        $u = $null
+        if ($query) {
+            foreach ($pair in ($query -split '&')) {
+                $kv = $pair -split '=', 2
+                if ($kv[0] -eq 'u') { $u = [System.Net.WebUtility]::UrlDecode($kv[1]); break }
+            }
+        }
+        $okUri = $false
+        try {
+            $uri = [System.Uri]$u
+            $okUri = ($uri.Host -ieq 'www.google.com' -and $uri.AbsolutePath -ieq '/maps/d/kml')
+        } catch { $okUri = $false }
+        if (-not $okUri) {
+            Send-Response $Stream 400 "Bad Request" "{`"ok`":false,`"error`":`"url-not-allowed`"}" "application/json; charset=utf-8"
+            return
+        }
+        try {
+            $req = [System.Net.HttpWebRequest]::Create($uri)
+            $req.Method = 'GET'
+            $req.Timeout = 15000
+            $req.ReadWriteTimeout = 15000
+            $resp = $req.GetResponse()
+            try {
+                $reader = New-Object System.IO.StreamReader($resp.GetResponseStream(), [System.Text.Encoding]::UTF8)
+                $kmlBody = $reader.ReadToEnd()
+                $reader.Dispose()
+            } finally { $resp.Dispose() }
+            Send-Response $Stream 200 "OK" $kmlBody "text/xml; charset=utf-8"
+        } catch {
+            Send-Response $Stream 502 "Bad Gateway" "{`"ok`":false,`"error`":`"kml-fetch-failed`"}" "application/json; charset=utf-8"
+        }
+        return
+    }
+
     $path = Resolve-PathSafe $target
         if ($null -eq $path) {
             Send-Response $Stream 404 "Not Found" "<h1>404 Not Found</h1><p>$([System.Net.WebUtility]::HtmlEncode($target))</p>"

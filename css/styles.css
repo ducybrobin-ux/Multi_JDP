@@ -859,3 +859,7 @@ body.night .balise.locked circle { fill: #405368; }
   .carnet-grid { grid-template-columns: repeat(4, 1fr); }
   .guide-grid { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* ---- Logo CEMÉA Nord-Pas-de-Calais ---- */
+.hero-logo { width: auto; max-width: min(240px, 62%); height: auto; background: rgba(255,255,255,0.92); padding: 10px 16px; }
+body.night .topbar-logo, body.night .hero-logo { background: rgba(255,255,255,0.95); }

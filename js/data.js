@@ -17,7 +17,7 @@ const SITE = {
   mapTitle: "Le sentier des découvertes",
   // Position du centre du site (GPS) — À RÉGLER via l'éditeur
   // (« Ma position GPS » sur chaque balise) avant le terrain.
-  center: { lat: 48.8566, lng: 2.3522 },
+  center: { lat: 50.6314885, lng: 3.0558956 },
   proximityRadius: 30, // en mètres : distance pour valider par GPS
   hintRadius: 250,     // en mètres : à partir d'où le signal sonore guide
   photos: [],
@@ -977,6 +977,262 @@ const BIRDS = [
         "reponse": 0
       }
     ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Expliquer en quoi apprendre dehors change la façon d'apprendre",
+      "programme": [
+        "cycle 2",
+        "cycle 3"
+      ]
+    },
+    "id": "journee-dehors",
+    "nom": "Éducation du Dehors",
+    "latin": "Journée Éducation du Dehors · Lille",
+    "emoji": "🌳",
+    "couleur": "#2e8f5a",
+    "categorie": "diurne",
+    "taille": "Repère : dehors, on apprend avec tout son corps",
+    "anecdotes": [
+      "Chaque année, la Journée Éducation du Dehors réunit plus d'une centaine de participant·es à Lille, animée par les CEMÉA Nord-Pas-de-Calais.",
+      "Apprendre dehors stimule l'attention, la motricité et la mémoire : le corps fait partie de la leçon.",
+      "L'éducation du dehors relie les « forest schools » nordiques à la pédagogie nouvelle née en France."
+    ],
+    "quiz": [
+      {
+        "q": "Apprendre dehors, c'est…",
+        "options": [
+          "Utiliser le lieu et le corps comme supports d'apprentissage",
+          "Une simple récréation prolongée",
+          "Réservé aux maternelles"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "La Journée Éducation du Dehors de Lille rassemble…",
+        "options": [
+          "Des professionnel·les, des familles et des curieux",
+          "Uniquement des élus",
+          "Personne : elle est virtuelle"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Relier coopération pédagogique et ouverture européenne",
+      "programme": [
+        "cycle 3",
+        "cycle 4",
+        "lycée"
+      ]
+    },
+    "id": "erasmus",
+    "nom": "Erasmus+",
+    "latin": "Mobilité européenne · accueil à Lille, 2026",
+    "emoji": "🇪🇺",
+    "couleur": "#0c6e8f",
+    "categorie": "diurne",
+    "taille": "Repère : voyager pour apprendre, accueillir pour transmettre",
+    "anecdotes": [
+      "En juin 2026, les CEMÉA Nord-Pas-de-Calais ont accueilli une délégation italienne : huit enseignantes des écoles Margherita Fasolo.",
+      "Erasmus+ finance des mobilités pour que les pratiques pédagogiques circulent entre pays.",
+      "Observer une classe d'ailleurs oblige à s'interroger sur ses propres habitudes."
+    ],
+    "quiz": [
+      {
+        "q": "Erasmus+, c'est un programme européen qui permet…",
+        "options": [
+          "De se former et d'observer ailleurs",
+          "De partir en vacances",
+          "De financer uniquement les universités"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "En 2026, les CEMÉA NPDC ont accueilli des enseignantes venues de…",
+        "options": [
+          "Italie",
+          "Portugal",
+          "Suède"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Découvrir la presse jeune et l'expression médiatique des enfants",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "yakamedia",
+    "nom": "Yakamédia",
+    "latin": "Média jeunesse des CEMÉA · revue Yak, 1955",
+    "emoji": "🎙️",
+    "couleur": "#d97b1f",
+    "categorie": "diurne",
+    "taille": "Réflexe : s'exprimer, créer et publier librement",
+    "anecdotes": [
+      "Yakamédia est la plateforme média des CEMÉA : des contenus créés par et pour les jeunes.",
+      "Dès 1955, la revue Yak donnait la parole aux enfants — une révolution à l'époque.",
+      "Fabriquer un journal développe l'esprit critique, l'écriture et la coopération."
+    ],
+    "quiz": [
+      {
+        "q": "Qui écrit et choisit les contenus de Yakamédia ?",
+        "options": [
+          "Les jeunes, accompagnés par des journalistes",
+          "Uniquement des adultes",
+          "Un algorithme"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "La revue Yak a été créée par les CEMÉA en…",
+        "options": [
+          "1955",
+          "1989",
+          "2005"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Comprendre ce qu'est une entreprise de l'ESS et son utilité sociale",
+      "programme": [
+        "cycle 4",
+        "lycée"
+      ]
+    },
+    "id": "ess",
+    "nom": "Économie sociale",
+    "latin": "ESS & utilité publique · mouvement CEMÉA",
+    "emoji": "🤲",
+    "couleur": "#7a3b8f",
+    "categorie": "nocturne",
+    "taille": "Repère : les bénéfices servent le projet, pas l'inverse",
+    "anecdotes": [
+      "Les CEMÉA sont une association reconnue d'utilité publique ET une entreprise de l'économie sociale et solidaire.",
+      "Dans l'ESS, ce ne sont pas les actionnaires qui décident mais les sociétaires : une personne = une voix.",
+      "Le réseau CEMÉA est décentralisé : chaque tête régionale agit au plus près de son territoire."
+    ],
+    "quiz": [
+      {
+        "q": "Dans une coopérative de l'ESS, la règle de vote est…",
+        "options": [
+          "Une personne = une voix",
+          "Un euro = une voix",
+          "Seuls les fondateurs votent"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "« Reconnue d'utilité publique » signifie que l'association…",
+        "options": [
+          "Poursuit un intérêt général reconnu par l'État",
+          "Est gérée par l'État",
+          "Ne paie aucun impôt"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Identifier les conditions concrètes d'un accueil accessible à tous",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "locaux-accessibles",
+    "nom": "Accueillir tout·es",
+    "latin": "Locaux accessibles · rue Ernest Deconynck, Lille",
+    "emoji": "♿",
+    "couleur": "#444a6b",
+    "categorie": "diurne",
+    "taille": "Repère : chacun·e a sa place autour du feu",
+    "anecdotes": [
+      "Les locaux lillois des CEMÉA Nord-Pas-de-Calais sont pensés pour être accessibles à toutes et tous.",
+      "L'accessibilité n'est pas une option : c'est une condition de la démocratie culturelle.",
+      "Bien accueillir commence par des portes larges, des consignes claires et du temps."
+    ],
+    "quiz": [
+      {
+        "q": "Un lieu « accessible » est un lieu que peuvent utiliser…",
+        "options": [
+          "Tout le monde, y compris en situation de handicap",
+          "Seules les personnes valides",
+          "Uniquement sur rendez-vous"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Pour l'éducation populaire, l'accueil de toutes et tous est…",
+        "options": [
+          "Un principe fondateur",
+          "Un détail pratique",
+          "Une contrainte légale seulement"
+        ],
+        "reponse": 0
+      }
+    ]
   }
 ];
 
@@ -1914,10 +2170,10 @@ const BALISES = [
     "bird": "cooperation",
     "code": "JDP-C1",
     "label": "Le cercle d'entraide",
-    "x": 74,
-    "y": 452,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 240,
+    "y": 105,
+    "lat": 50.6314837,
+    "lng": 3.0558926,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -1968,14 +2224,139 @@ const BALISES = [
   {
     "type": "balise",
     "version": 1,
+    "id": "C10",
+    "bird": "ess",
+    "code": "JDP-C10",
+    "label": "La monnaie du sens",
+    "x": 87,
+    "y": 225,
+    "lat": 50.6315014,
+    "lng": 3.0558671,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Ici, l'argent gagné retourne dans le projet, pas dans les poches d'actionnaires. Comment appelle-t-on cette économie ?",
+        "reponses": [
+          "l'economie sociale et solidaire",
+          "economie sociale et solidaire",
+          "ess",
+          "l ess",
+          "l'ess",
+          "economie solidaire"
+        ],
+        "indice": "Trois initiales : E-S-S.",
+        "saviez": "Les CEMÉA relèvent à la fois de l'utilité publique et de l'économie sociale et solidaire.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Coopératives, associations, mutuelles : mon principe est simple, une personne = une voix. Quel secteur suis-je ?",
+        "reponses": [
+          "l'economie sociale et solidaire",
+          "economie sociale et solidaire",
+          "ess",
+          "l ess",
+          "l'ess"
+        ],
+        "indice": "On la surnomme souvent par trois lettres.",
+        "saviez": "Dans une coopérative, ce sont les sociétaires qui votent, pas les actionnaires majoritaires.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Association reconnue d'utilité publique ET entreprise de l'ESS, le mouvement CEMÉA s'appuie sur un réseau décentralisé. Sur quoi repose sa gouvernance ?",
+        "reponses": [
+          "une personne une voix",
+          "1 personne 1 voix",
+          "une personne egale une voix",
+          "une personne = une voix",
+          "une tete regionale par territoire"
+        ],
+        "indice": "Pensez au suffrage… coopératif.",
+        "saviez": "Chaque tête régionale CEMÉA adapte les formations aux besoins de son territoire.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C11",
+    "bird": "locaux-accessibles",
+    "code": "JDP-C11",
+    "label": "La porte large",
+    "x": 149,
+    "y": 138,
+    "lat": 50.6315107,
+    "lng": 3.0558901,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Mes portes sont larges, mes couloirs sans marches : ici, tout le monde peut entrer et apprendre. De quoi parle-t-on ?",
+        "reponses": [
+          "l'accessibilite",
+          "accessibilite",
+          "accessibilité",
+          "un lieu accessible",
+          "locaux accessibles"
+        ],
+        "indice": "Le mot vient de « accéder » : pouvoir entrer.",
+        "saviez": "Les locaux lillois des CEMÉA NPDC sont conçus pour être accessibles à toutes et tous.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Rampes, signalétique claire, temps adapté : je désigne l'ensemble des conditions qui permettent à chacun de participer. Suis-je ?",
+        "reponses": [
+          "l'accessibilite",
+          "accessibilite",
+          "accessibilite universelle",
+          "l accessibilite"
+        ],
+        "indice": "Universelle, même.",
+        "saviez": "L'accessibilité est une condition de la démocratie culturelle défendue par l'éducation populaire.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Siège des CEMÉA Nord-Pas-de-Calais, ce lieu lillois illustre leur principe d'accueil inconditionnel. Dans quelle rue se trouve-t-il ?",
+        "reponses": [
+          "rue ernest deconynck",
+          "ernest deconynck",
+          "11 rue ernest deconynck",
+          "rue deconynck"
+        ],
+        "indice": "Un prénom et un nom lillois : Ernest …",
+        "saviez": "Bien accueillir commence par l'architecture : portes larges, cheminements clairs, temps laissés.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
     "id": "C2",
     "bird": "methode-active",
     "code": "JDP-C2",
     "label": "L'atelier des mains",
-    "x": 148,
-    "y": 400,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 331,
+    "y": 138,
+    "lat": 50.6314952,
+    "lng": 3.0559003,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2030,10 +2411,10 @@ const BALISES = [
     "bird": "expression",
     "code": "JDP-C3",
     "label": "La scène ouverte",
-    "x": 238,
-    "y": 292,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 393,
+    "y": 225,
+    "lat": 50.631502,
+    "lng": 3.0559154,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2086,10 +2467,10 @@ const BALISES = [
     "bird": "emancipation",
     "code": "JDP-C4",
     "label": "Le conseil des libres",
-    "x": 320,
-    "y": 320,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 406,
+    "y": 339,
+    "lat": 50.6314986,
+    "lng": 3.0559328,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2145,10 +2526,10 @@ const BALISES = [
     "bird": "acces-tous",
     "code": "JDP-C5",
     "label": "La grande porte ouverte",
-    "x": 406,
-    "y": 448,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 367,
+    "y": 444,
+    "lat": 50.6314833,
+    "lng": 3.0559315,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2203,10 +2584,10 @@ const BALISES = [
     "bird": "jeu-role",
     "code": "JDP-C6",
     "label": "Le terrain des possibles",
-    "x": 388,
-    "y": 396,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "x": 287,
+    "y": 507,
+    "lat": 50.6314782,
+    "lng": 3.0559141,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2248,6 +2629,187 @@ const BALISES = [
         ],
         "indice": "Pluriel conseillé : on n'éprouve jamais qu'une seule fois.",
         "saviez": "Ces mises en situation préparent aux métiers de l'animation, du social et de l'éducation spécialisée.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C7",
+    "bird": "journee-dehors",
+    "code": "JDP-C7",
+    "label": "La salle sans murs",
+    "x": 193,
+    "y": 507,
+    "lat": 50.6314652,
+    "lng": 3.0558846,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Ma salle n'a ni plafond ni murs : les feuilles servent de cahier et le vent de messager. Où apprend-on ainsi ?",
+        "reponses": [
+          "dehors",
+          "en exterieur",
+          "à l'extérieur",
+          "exterieur",
+          "la nature",
+          "nature",
+          "en pleine air",
+          "plein air"
+        ],
+        "indice": "Levez les yeux : le plafond est bleu (ou gris).",
+        "saviez": "La Journée Éducation du Dehors réunit chaque année un peu plus d'une centaine de participant·es à Lille.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Forest schools au nord, classes vertes au sud : je désigne toutes les pratiques où l'on apprend hors des murs. Qui suis-je ?",
+        "reponses": [
+          "l'education du dehors",
+          "education du dehors",
+          "education dehors",
+          "l education du dehors"
+        ],
+        "indice": "Trois mots : éducation … du …",
+        "saviez": "Apprendre dehors mobilise le corps : on retient mieux quand on bouge, touche et explore.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Organisée à Lille par les CEMÉA NPDC, cette journée annuelle rassemble plus de cent professionnels de l'enfance autour du jeu et de la nature. Son nom ?",
+        "reponses": [
+          "journee education du dehors",
+          "la journee education du dehors",
+          "journee de l education du dehors",
+          "journée éducation du dehors"
+        ],
+        "indice": "Elle célèbre un lieu : le « dehors ».",
+        "saviez": "Les forest schools scandinaves inspirent directement les pratiques françaises d'éducation du dehors.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C8",
+    "bird": "erasmus",
+    "code": "JDP-C8",
+    "label": "Le pont de l'Europe",
+    "x": 113,
+    "y": 444,
+    "lat": 50.6314701,
+    "lng": 3.0558641,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Huit maîtresses italiennes ont traversé la mer pour découvrir comment on fait la classe à la française. Quel programme européen paie le voyage ?",
+        "reponses": [
+          "erasmus",
+          "erasmus+",
+          "erasmus plus",
+          "le programme erasmus"
+        ],
+        "indice": "Ce prénom grec est devenu LE mot des échanges d'étudiants.",
+        "saviez": "En juin 2026, les CEMÉA NPDC accueillaient huit enseignantes des écoles Margherita Fasolo (Italie).",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Je finance les mobilités des apprentis, des élèves et des enseignants pour que les savoirs voyagent en Europe. Je suis…",
+        "reponses": [
+          "erasmus+",
+          "erasmus plus",
+          "erasmus"
+        ],
+        "indice": "Ajoutez un « + » au nom le plus connu d'Europe.",
+        "saviez": "Observer une classe étrangère oblige à repenser ses propres routines pédagogiques.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Juin 2026, Lille : une délégation italienne découvre la pédagogie active grâce aux CEMÉA NPDC. Quelles écoles représentait-elle ?",
+        "reponses": [
+          "ecoles margherita fasolo",
+          "les ecoles margherita fasolo",
+          "margherita fasolo",
+          "ecole margherita fasolo"
+        ],
+        "indice": "Un prénom et un nom : Margherita …",
+        "saviez": "Les mobilités Erasmus+ concernent aussi bien les élèves que les professionnel·les de l'éducation.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C9",
+    "bird": "yakamedia",
+    "code": "JDP-C9",
+    "label": "La voix des jeunes",
+    "x": 74,
+    "y": 339,
+    "lat": 50.6314852,
+    "lng": 3.0558591,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Journal, radio, vidéo : ici, ce sont les jeunes qui tiennent la plume et le micro. Comment s'appelle leur média ?",
+        "reponses": [
+          "yakamedia",
+          "yaka media",
+          "yak"
+        ],
+        "indice": "Ça commence comme « Y a ka »… comprendre : il y a quoi !",
+        "saviez": "Yakamédia publie des contenus créés par et pour les jeunes, accompagnés par les CEMÉA.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Née en 1955 sous forme de revue, je donne la parole aux enfants depuis bientôt un siècle de médias. Mon petit nom ?",
+        "reponses": [
+          "yak",
+          "la revue yak",
+          "revue yak"
+        ],
+        "indice": "Trois lettres, ça veut dire « il y a quoi ? ».",
+        "saviez": "Faire son journal apprend à vérifier, hiérarchiser et raconter : le socle de l'esprit critique.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Plateforme des CEMÉA dédiée aux médias jeunesse, je prolonge une revue pionnière créée en 1955. Mon nom complet ?",
+        "reponses": [
+          "yakamedia",
+          "yaka media",
+          "yakamedia cemea",
+          "la plateforme yakamedia"
+        ],
+        "indice": "Yak + média.",
+        "saviez": "En 1955, laisser les enfants écrire leur propre revue était une vraie révolution culturelle.",
         "ages": [
           14,
           99

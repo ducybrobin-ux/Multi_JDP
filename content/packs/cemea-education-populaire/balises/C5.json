@@ -5,10 +5,10 @@
   "bird": "acces-tous",
   "code": "JDP-C5",
   "label": "La grande porte ouverte",
-  "x": 406,
-  "y": 448,
-  "lat": 48.8566,
-  "lng": 2.3522,
+  "x": 367,
+  "y": 444,
+  "lat": 50.6314833,
+  "lng": 3.0559315,
   "hintImg": "",
   "enigmes": {
     "facile": {

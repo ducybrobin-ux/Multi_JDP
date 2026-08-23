@@ -101,7 +101,7 @@
 </head>
 <body>
   <header class="topbar">
-    <img class="topbar-logo" src="img/logo.svg" alt="JDP_BC">
+    <img class="topbar-logo" src="img/logo-cemea.png" alt="Multi JDP">
     <h1>JDP — Éditeur de contenu</h1>
     <button id="btn-dashboard" class="icon-btn" title="Tableau de bord" onclick="location.href='/dashboard'">🎛️</button>
     <button id="btn-reload" class="icon-btn" title="Recharger depuis le serveur" onclick="location.reload()">🔄</button>
@@ -168,12 +168,25 @@
         <div class="map-editor-head">
           <b>🗺️ Carte des balises</b>
           <span class="note">Glissez les pastilles pour déplacer une balise (lat/lng). Cliquez sur une pastille pour voir/changer sa photo.</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input type="search" id="map-ed-search" placeholder="🔎 Rechercher une balise (n°, code, nom)…" style="flex:1 1 200px;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--text)">
+            <div id="map-ed-results" class="hidden" style="position:absolute;z-index:1200;max-height:180px;overflow:auto;background:var(--card);border:2px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.35)"></div>
+          </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button id="btn-map-add" class="btn btn-outline" onclick="mapEdToggleAdd()">➕ Ajouter une balise</button>
             <button class="btn btn-outline" onclick="mapEdFitAll()">🔍 Tout afficher</button>
             <button class="btn btn-outline" onclick="mapEdLocateMe()">📍 Me localiser</button>
             <button class="btn btn-outline" onclick="openMapFullscreen()">🖥️ Plein écran</button>
+            <button id="btn-map-import" class="btn btn-outline" onclick="mapEdToggleImport()">⬇️ Importer KML / My Maps</button>
+            <button class="btn btn-outline" onclick="mapEdAutoLayout()">🧭 Ajuster la carte du jeu</button>
             <button class="btn btn-outline" onclick="closeMapEditor()">✖ Fermer</button>
+          </div>
+          <div id="map-ed-import" class="hidden" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+            <input type="text" id="map-ed-kml-url" placeholder="Collez l'adresse de votre carte Google My Maps…" style="flex:1 1 260px;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--text)">
+            <button class="btn btn-primary" onclick="mapEdImportKmlUrl()">🌐 Importer l'URL</button>
+            <button class="btn btn-outline" onclick="document.getElementById('map-ed-kml-file').click()">📄 Fichier .kml…</button>
+            <input type="file" id="map-ed-kml-file" accept=".kml,.xml,application/vnd.google-earth.kml+xml,text/xml" class="hidden">
+            <span class="note">Les repères sont attribués dans l'ordre aux balises existantes, puis la carte du jeu est ajustée.</span>
           </div>
         </div>
         <div id="map-editor-map" class="map-editor-map"></div>
@@ -1155,6 +1168,158 @@
       setStatus("➕ Balise " + b.id + " placée sur la carte. Renseignez-la puis Enregistrer.", "ok");
     }
 
+    /* ---------- Recherche dans l'éditeur de carte ---------- */
+    function mapEdSearch(q) {
+      const box = document.getElementById("map-ed-results");
+      if (!box) return;
+      q = (q || "").trim().toLowerCase();
+      if (!q) { box.classList.add("hidden"); box.innerHTML = ""; return; }
+      const hits = BALISES.filter((b) =>
+        String(b.id || "").toLowerCase().indexOf(q) !== -1 ||
+        String(b.code || "").toLowerCase().replace("jdp-", "").indexOf(q) !== -1 ||
+        String(b.label || "").toLowerCase().indexOf(q) !== -1);
+      box.innerHTML = hits.length
+        ? hits.map((b, i) => '<button class="btn btn-outline" style="display:block;width:100%;text-align:left;border:none;border-radius:0" onclick="mapEdGoTo(\'' + b.id + '\')">' + (i + 1) + '. ' + esc(String(b.code || b.id)) + " · " + esc(String(b.label || "")) + "</button>").join("")
+        : '<span class="note" style="padding:8px;display:block">Aucune balise trouvée.</span>';
+      box.classList.remove("hidden");
+    }
+
+    function mapEdGoTo(id) {
+      const box = document.getElementById("map-ed-results");
+      if (box) { box.classList.add("hidden"); }
+      const input = document.getElementById("map-ed-search");
+      if (input) input.value = "";
+      mapEdCenterOn(id);
+      const b = getBalise(id);
+      if (!b || !mapLayer) return;
+      mapLayer.eachLayer((m) => {
+        if (m.getLatLng && Math.abs(m.getLatLng().lat - b.lat) < 1e-9 && Math.abs(m.getLatLng().lng - b.lng) < 1e-9) m.openPopup();
+      });
+    }
+
+    /* ---------- Import KML / Google My Maps ---------- */
+    function mapEdToggleImport() {
+      const p = document.getElementById("map-ed-import");
+      if (p) p.classList.toggle("hidden");
+    }
+
+    function myMapsToKml(url) {
+      const m = String(url || "").match(/mid=([A-Za-z0-9_-]+)/);
+      if (m) return "https://www.google.com/maps/d/kml?mid=" + m[1] + "&forcekml=1";
+      return url;
+    }
+
+    async function mapEdImportKmlUrl() {
+      const el = document.getElementById("map-ed-kml-url");
+      const raw = el ? el.value.trim() : "";
+      if (!raw) { setStatus("🌐 Collez d'abord l'adresse de votre carte My Maps (ou un lien KML).", "err"); return; }
+      setStatus("⬇️ Import des repères…", "");
+      try {
+        const r = await fetch("/api/kml?u=" + encodeURIComponent(myMapsToKml(raw)), { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const text = await r.text();
+        mapEdApplyKml(text, "URL importée");
+      } catch (e) {
+        setStatus("❌ Impossible de charger l'URL (" + e.message + "). Utilisez « 📄 Fichier .kml… » (Télécharger KML depuis Google My Maps).", "err");
+      }
+    }
+
+    function mapEdImportKmlFile(file) {
+      const reader = new FileReader();
+      reader.onload = () => mapEdApplyKml(String(reader.result || ""), file.name);
+      reader.readAsText(file);
+    }
+
+    function kmlPoints(text) {
+      const doc = new DOMParser().parseFromString(text, "text/xml");
+      const marks = Array.from(doc.getElementsByTagName("Placemark"));
+      const pts = [];
+      for (const mk of marks) {
+        const name = (mk.getElementsByTagName("name")[0] || {}).textContent || "";
+        const coord = ((mk.getElementsByTagName("coordinates")[0] || {}).textContent || "").trim().split(/\s+/)[0] || "";
+        const parts2 = coord.split(",");
+        if (parts2.length >= 2) {
+          const lng = parseFloat(parts2[0]), lat = parseFloat(parts2[1]);
+          if (isFinite(lat) && isFinite(lng)) pts.push({ name: name.trim(), lat: lat, lng: lng });
+        }
+      }
+      pts.sort((a, b) => a.name.localeCompare(b.name, "fr", { numeric: true }));
+      return pts;
+    }
+
+    function mapEdApplyKml(text, source) {
+      const pts = kmlPoints(text);
+      if (!pts.length) { setStatus("❌ Aucun repère trouvé dans ce fichier KML.", "err"); return; }
+      const n = Math.min(pts.length, BALISES.length);
+      for (let i = 0; i < n; i++) {
+        const b = BALISES[i];
+        b.lat = +pts[i].lat.toFixed(7);
+        b.lng = +pts[i].lng.toFixed(7);
+        syncBaliseLatLngToForm(b);
+      }
+      if (pts.length > BALISES.length) setStatus("⚠️ " + pts.length + " repères pour " + BALISES.length + " balises : les " + BALISES.length + " premières ont été positionnées.", "err");
+      mapEdRefreshMarkers();
+      mapEdCenterFromBalises();
+      mapEdAutoLayout(true);
+      const cLat = pts.reduce((s, p) => s + p.lat, 0) / pts.length;
+      const cLng = pts.reduce((s, p) => s + p.lng, 0) / pts.length;
+      const sLat = document.getElementById("s-center-lat"), sLng = document.getElementById("s-center-lng");
+      if (sLat) sLat.value = (+cLat.toFixed(7));
+      if (sLng) sLng.value = (+cLng.toFixed(7));
+      setStatus("✅ " + n + " repères attribués (" + source + ") · centre du site mis à jour · carte du jeu ajustée. Pensez à 💾 Enregistrer.", "ok");
+      syncToOpener();
+    }
+
+    function mapEdRefreshMarkers() {
+      renderMapMarkers();
+    }
+
+    function mapEdCenterFromBalises() {
+      const ok = BALISES.filter((b) => isFinite(b.lat) && isFinite(b.lng) && (b.lat !== 0 || b.lng !== 0));
+      if (!ok.length || !mapEditor) return;
+      const bb = L.latLngBounds(ok.map((b) => [b.lat, b.lng]));
+      mapEditor.fitBounds(bb.pad(0.25));
+    }
+
+    /* Projette les positions GPS sur la carte schématique du jeu (480×620)
+       et régénère le tracé. Si tous les points sont très proches (< 30 m),
+       ils sont répartis en ellipse lisible autour du centre. */
+    function mapEdAutoLayout(silent) {
+      const W = 480, H = 620, PAD = 70;
+      const ok = BALISES.filter((b) => isFinite(b.lat) && isFinite(b.lng));
+      if (ok.length < 2) { setStatus("🧭 Il faut au moins deux balises avec coordonnées GPS.", "err"); return; }
+      const latMin = Math.min.apply(null, ok.map((b) => b.lat));
+      const latMax = Math.max.apply(null, ok.map((b) => b.lat));
+      const lngMin = Math.min.apply(null, ok.map((b) => b.lng));
+      const lngMax = Math.max.apply(null, ok.map((b) => b.lng));
+      const midLat = (latMin + latMax) / 2;
+      const wM = (lngMax - lngMin) * 111320 * Math.cos(midLat * Math.PI / 180);
+      const hM = (latMax - latMin) * 110574;
+      let pos = {};
+      if (wM < 30 && hM < 30) {
+        ok.forEach((b, i) => {
+          const ang = -Math.PI / 2 + (2 * Math.PI * i) / ok.length;
+          pos[b.id] = [Math.round(W / 2 + (W / 2 - PAD) * Math.cos(ang)), Math.round(H / 2 + (H / 2 - PAD) * Math.sin(ang))];
+        });
+      } else {
+        ok.forEach((b) => {
+          const x = PAD + (b.lng - lngMin) / Math.max(lngMax - lngMin, 1e-12) * (W - 2 * PAD);
+          const y = H - PAD - (b.lat - latMin) / Math.max(latMax - latMin, 1e-12) * (H - 2 * PAD);
+          pos[b.id] = [Math.round(x), Math.round(y)];
+        });
+      }
+      ok.forEach((b) => {
+        const fx = document.getElementById("b-" + b.id + "-x");
+        const fy = document.getElementById("b-" + b.id + "-y");
+        if (fx) fx.value = pos[b.id][0];
+        if (fy) fy.value = pos[b.id][1];
+      });
+      const ta = document.getElementById("t-path");
+      if (ta) ta.value = ok.map((b) => pos[b.id][0] + " " + pos[b.id][1]).join("\n");
+      if (!silent) setStatus("🧭 Carte du jeu recalculée depuis les coordonnées GPS (" + ok.length + " balises). Vérifiez puis 💾 Enregistrer.", "ok");
+    }
+
+
     function mapOnImgSelect(id) {
       const sel = document.getElementById("mappop-" + id + "-img-sel");
       if (!sel) return;
@@ -1565,11 +1730,17 @@
       input.addEventListener("input", () => {
         const q = input.value.trim().toLowerCase();
         document.querySelectorAll("details.ed-card").forEach((card) => {
-          const summary = card.querySelector("summary");
-          const text = summary ? summary.textContent.toLowerCase() : "";
+          const text = card.textContent.toLowerCase();
           card.style.display = (!q || text.indexOf(q) !== -1) ? "" : "none";
         });
       });
+      const ms = document.getElementById("map-ed-search");
+      if (ms) {
+        ms.addEventListener("input", () => mapEdSearch(ms.value));
+        ms.addEventListener("keydown", (ev) => { if (ev.key === "Escape") { ms.value = ""; mapEdSearch(""); } });
+      }
+      const kf = document.getElementById("map-ed-kml-file");
+      if (kf) kf.addEventListener("change", () => { if (kf.files && kf.files[0]) mapEdImportKmlFile(kf.files[0]); kf.value = ""; });
     }
 
     async function sendReport() {

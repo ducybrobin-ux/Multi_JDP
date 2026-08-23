@@ -3,6 +3,17 @@
 Toutes les évolutions notables de Multi JDP sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
 
+## [2.0.1] — 2026-08-23
+
+### Ajouté
+- **Pack CEMÉA étendu à 11 balises** : nouvelles découvertes Éducation du Dehors, Erasmus+, Yakamédia, Économie sociale, Accueillir tout·es — parcours CEMÉA complet positionné sur les repères GPS réels du site (import depuis Google My Maps)
+- **Éditeur de carte** : import KML / Google My Maps par URL (proxy serveur `/api/kml`, anti-CORS) ou fichier `.kml` ; attribution des repères aux balises dans l'ordre, recentrage automatique
+- **Recherche dans l'éditeur de carte** : retrouvez une balise par numéro, code ou nom et centrez la carte dessus
+- **Ajustement de la carte du jeu** : projection automatique des coordonnées GPS vers la carte schématique (répartition en ellipse si le terrain est compact) et régénération du tracé
+
+### Modifié
+- Identité visuelle CEMÉA Nord-Pas-de-Calais : logo officiel (variante blanche pour le mode nuit), mise à jour des écrans
+
 ## [2.0.0] — 2026-08-23
 
 ### Ajouté
