@@ -1,4 +1,4 @@
-# Contribuer à JDP_BC
+# Contribuer à Multi JDP
 
 Merci de votre intérêt ! Toutes les contributions sont bienvenues : corrections, nouvelles notions pédagogiques, énigmes, améliorations d'interface, documentation.
 
@@ -30,11 +30,12 @@ Le contenu vit dans [`content/`](content/) — un fichier JSON par notion, avec 
 content/
   manifest.json                     packs actifs
   schemas/                          contrats JSON Schema (draft-07)
-  packs/biais-cognitifs/
+  themes/                           thèmes visuels (JSON)
+  packs/cemea-education-populaire/
     pack.json                       identité du pack
-    decouvertes/01-confirmation.json   … une fiche par biais du sentier
-    guide/01-reciprocite.json          … les notions complémentaires
-    balises/B1.json                    … énigmes par niveau + tranches d'âge
+    decouvertes/01-histoire.json    … une fiche par découverte du sentier
+    guide/02-metiers-animation.json … les notions complémentaires
+    balises/C1.json                 … énigmes par niveau + tranches d'âge
 ```
 
 Chaque notion porte un bloc `pedagogie` :

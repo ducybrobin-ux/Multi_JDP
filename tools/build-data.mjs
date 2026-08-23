@@ -67,6 +67,13 @@ function validerBalise(f, b) {
   }
 }
 
+function validerTheme(f, t) {
+  for (const k of ["id", "nom", "emoji"]) {
+    if (!t[k]) fail(f, `champ requis manquant : ${k}`);
+  }
+  if (!t.vars || typeof t.vars !== "object" || !Object.keys(t.vars).length) fail(f, "vars{} requis (variables CSS)");
+}
+
 /* ---- Chargement des packs actifs ---- */
 function chargerPack(dir) {
   const pack = readJson(path.join(dir, "pack.json"));
@@ -91,6 +98,11 @@ function sortedJsonFiles(dir) {
 
 function chargerContenu() {
   const manifest = readJson(path.join(CONTENT, "manifest.json"));
+  const vus = new Set();
+  for (const entry of manifest.packs) {
+    if (vus.has(entry.id)) fail(CONTENT, `pack « ${entry.id} » déclaré deux fois dans manifest.json`);
+    vus.add(entry.id);
+  }
   const decouvertes = [], guide = [], balises = [];
   const packsActifs = [], packsCharges = [];
   for (const entry of manifest.packs) {
@@ -103,16 +115,48 @@ function chargerContenu() {
     guide.push(...p.guide);
     balises.push(...p.balises);
   }
-  /* Cohérence croisée : chaque balise pointe vers une découverte existante */
+  /* --- Anti-doublons entre packs actifs --- */
+  const verifierUnicite = (liste, quoi) => {
+    const vus2 = new Map();
+    for (const x of liste) {
+      if (vus2.has(x.id)) {
+        fail(CONTENT, `${quoi} « ${x.id} » présent dans plusieurs packs actifs (${vus2.get(x.id)} et un autre) — désactivez l'un des deux ou renommez`);
+      }
+      vus2.set(x.id, quoi);
+    }
+  };
+  verifierUnicite(decouvertes, "découverte");
+  verifierUnicite(guide, "notion");
+  verifierUnicite(balises, "balise");
+  const codesVus = new Set();
+  for (const b of balises) {
+    if (codesVus.has(b.code)) fail(CONTENT, `code de validation dupliqué « ${b.code} » (balise ${b.id})`);
+    codesVus.add(b.code);
+  }
+
+  /* Cohérence croisée : chaque balise pointe vers une découverte active */
   const ids = new Set(decouvertes.map((d) => d.id));
   for (const b of balises) {
-    if (!ids.has(b.bird)) fail(CONTENT, `balise ${b.id} → découverte inconnue « ${b.bird} »`);
+    if (!ids.has(b.bird)) fail(CONTENT, `balise ${b.id} → découverte inconnue ou inactive « ${b.bird} »`);
   }
-  return { decouvertes, guide, balises, packsActifs, packsCharges };
+  return { decouvertes, guide, balises, themes: chargerThemes(), packsActifs, packsCharges };
+}
+
+function chargerThemes() {
+  const dir = path.join(CONTENT, "themes");
+  if (!fs.existsSync(dir)) return [];
+  const themes = [];
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
+    const p = path.join(dir, f);
+    const t = readJson(p);
+    validerTheme(p, t);
+    themes.push(t);
+  }
+  return themes;
 }
 
 /* ---- Régénération de la région ---- */
-function regionGeneree({ decouvertes, guide, balises, packsActifs }) {
+function regionGeneree({ decouvertes, guide, balises, themes, packsActifs }) {
   const j = (o) => JSON.stringify(o, null, 2);
   return `${M_DEBUT}
    Source de vérité : content/ (packs JSON modulaires).
@@ -131,6 +175,9 @@ const DIFFICULTIES = [
   { id: "moyen", label: "Moyen" },
   { id: "difficile", label: "Difficile" },
 ];
+
+/* Thèmes visuels sélectionnables dans Réglages (content/themes/) */
+const THEMES = ${j(themes)};
 ${M_FIN}`;
 }
 

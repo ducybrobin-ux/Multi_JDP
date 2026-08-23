@@ -14,7 +14,7 @@ const SITE = {
   name: "Jeu de piste",
   short: "JDP",
   region: "Parcours découverte",
-  mapTitle: "Le sentier de l'esprit",
+  mapTitle: "Le sentier des découvertes",
   // Position du centre du site (GPS) — À RÉGLER via l'éditeur
   // (« Ma position GPS » sur chaque balise) avant le terrain.
   center: { lat: 48.8566, lng: 2.3522 },
@@ -30,7 +30,7 @@ const TRAIL = {
     [176, 356], [200, 308], [238, 292], [282, 296], [320, 320],
     [356, 352], [388, 396], [406, 448], [392, 500], [366, 540], [330, 556],
   ],
-  label: "Sentier de l'esprit",
+  label: "Sentier des découvertes",
 };
 
 /* ---- Découvertes (biais cognitifs) --------------------------------
@@ -43,7 +43,7 @@ const TRAIL = {
 
 /* ==== DÉBUT CONTENU GÉNÉRÉ — NE PAS ÉDITER ====
    Source de vérité : content/ (packs JSON modulaires).
-   Packs actifs : biais-cognitifs
+   Packs actifs : biais-cognitifs, cemea-education-populaire
    Régénérer : node tools/build-data.mjs
    Vérifier la synchro : node tools/build-data.mjs --check ==== */
 
@@ -671,6 +671,312 @@ const BIRDS = [
         "reponse": 0
       }
     ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Identifier des situations où coopérer fait mieux apprendre que rivaliser",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "cooperation",
+    "nom": "Coopération",
+    "latin": "Pédagogie coopérative · Freinet, 1924",
+    "emoji": "🤝",
+    "couleur": "#0f9b8e",
+    "categorie": "diurne",
+    "taille": "Réflexe : chercher ce qui fait avancer tout le groupe",
+    "anecdotes": [
+      "En coopération, chacun apporte un morceau de la réussite : personne n'est « nul », chacun est utile.",
+      "Le tutorat entre pairs : expliquer à un camarade est l'un des meilleurs moyens d'apprendre soi-même.",
+      "La coopération traverse les frontières : en juin 2026, les CEMÉA Nord-Pas-de-Calais ont accueilli huit enseignantes italiennes dans le cadre d'un projet Erasmus+."
+    ],
+    "quiz": [
+      {
+        "q": "Dans une pédagogie coopérative, on apprend surtout…",
+        "options": [
+          "En travaillant ensemble et en s'entraidant",
+          "Chacun seul dans son coin",
+          "En compétition permanente"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Expliquer une notion à un camarade, c'est…",
+        "options": [
+          "Un excellent moyen de mieux la comprendre soi-même",
+          "Perdre son temps",
+          "Interdit pendant la classe"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Comprendre que l'expérience directe ancre durablement les savoirs",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "methode-active",
+    "nom": "Apprendre en faisant",
+    "latin": "Éducation active · CEMÉA, 1937",
+    "emoji": "✋",
+    "couleur": "#2e6fb3",
+    "categorie": "diurne",
+    "taille": "Réflexe : essayer, se tromper, recommencer",
+    "anecdotes": [
+      "Fondés en 1937, les CEMÉA (Centres d'entraînement aux méthodes d'éducation active) forment animateurs et éducateurs en pratiquant, pas en récitant.",
+      "Chaque année, la Journée de l'Éducation du Dehors organisée par le secteur École réunit à Lille une centaine d'enseignant·es, éducateur·rice·s et chercheur·se·s.",
+      "L'erreur y est une étape normale de l'apprentissage, pas une faute à punir."
+    ],
+    "quiz": [
+      {
+        "q": "Une « méthode active », c'est apprendre…",
+        "options": [
+          "En faisant soi-même, par l'expérience",
+          "En écoutant sans bouger",
+          "En récitant par cœur uniquement"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Dans les centres d'entraînement (CEMÉA), on forme…",
+        "options": [
+          "Des animateurs et des éducateurs, en pratiquant",
+          "Seulement des professeurs",
+          "Des sportifs de haut niveau"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Oser s'exprimer devant le groupe et écouter la parole des autres",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "expression",
+    "nom": "Expression libre",
+    "latin": "Textes libres & théâtre-forum · Boal, 1971",
+    "emoji": "🗣️",
+    "couleur": "#d97b1f",
+    "categorie": "diurne",
+    "taille": "Réflexe : donner la parole à celles et ceux qui ne la prennent pas",
+    "anecdotes": [
+      "Texte libre, journal de classe… aujourd'hui, les jeunes publient aussi sur Yakamédia, le média des CEMÉA : toujours de vrais lecteurs pour leur parole.",
+      "Le théâtre-forum joue une situation puis demande au public de changer la fin : s'entraîner à agir.",
+      "Parler devant les autres s'apprend aussi : c'est une compétence, pas un don."
+    ],
+    "quiz": [
+      {
+        "q": "Le théâtre-forum consiste à…",
+        "options": [
+          "Rejouer une scène et proposer d'autres issues",
+          "Regarder une pièce en silence",
+          "Réciter des vers"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Publier les textes libres des élèves sert à…",
+        "options": [
+          "Leur donner de vrais lecteurs et de la confiance",
+          "Les corriger sans pitié",
+          "Remplir le bureau du directeur"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Relier apprentissages et capacité d'agir sur sa vie",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "emancipation",
+    "nom": "Émancipation",
+    "latin": "Instruction pour tous · Condorcet, 1792",
+    "emoji": "⚖️",
+    "couleur": "#5a4fcf",
+    "categorie": "nocturne",
+    "taille": "Réflexe : comprendre le monde pour pouvoir le transformer",
+    "anecdotes": [
+      "L'éducation populaire vise l'émancipation : devenir libre par la compréhension, pas subir les décisions des autres.",
+      "Condorcet rêvait dès 1792 d'une instruction vraiment universelle et gratuite.",
+      "Les CEMÉA sont aussi une entreprise de l'économie sociale et solidaire et un terrain d'expérimentation : une autre économie mise au service de l'éducation."
+    ],
+    "quiz": [
+      {
+        "q": "S'émanciper par la connaissance, c'est…",
+        "options": [
+          "Devenir plus libre de penser et d'agir",
+          "Mémoriser sans comprendre",
+          "Suivre sans discuter"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Qui rêvait d'une instruction universelle dès 1792 ?",
+        "options": [
+          "Condorcet",
+          "Napoléon",
+          "Jules Ferry"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Repérer les inégalités d'accès à la culture et imaginer des solutions",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "acces-tous",
+    "nom": "Pour toutes et tous",
+    "latin": "Loisirs populaires · Léo Lagrange, 1936",
+    "emoji": "🌍",
+    "couleur": "#c2452e",
+    "categorie": "diurne",
+    "taille": "Réflexe : se demander qui manque à l'appel",
+    "anecdotes": [
+      "Avec les congés payés de 1936, Léo Lagrange invente les loisirs encadrés pour celles et ceux qui n'en avaient jamais eu.",
+      "À Lille, les locaux des CEMÉA Nord-Pas-de-Calais sont pensés pour l'accessibilité de toutes et tous : l'accueil commence par la porte.",
+      "Une question clé de l'éducation populaire : qui n'a pas accès ? Comment ouvrir la porte ?"
+    ],
+    "quiz": [
+      {
+        "q": "En 1936, avec les congés payés, Léo Lagrange développe…",
+        "options": [
+          "Les loisirs populaires encadrés pour toutes et tous",
+          "Les vacances réservées aux riches",
+          "L'école le samedi"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "La démocratie culturelle veut dire que la culture est…",
+        "options": [
+          "Un droit pour chacun",
+          "Une marchandise rare",
+          "Réservée aux experts"
+        ],
+        "reponse": 0
+      }
+    ]
+  },
+  {
+    "type": "decouverte",
+    "version": 1,
+    "img": "",
+    "audioFile": null,
+    "chant": null,
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 8,
+      "objectif": "Utiliser le jeu comme espace d'essai et de réflexion",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "jeu-role",
+    "nom": "Jouer pour apprendre",
+    "latin": "Mises en situation · CEMÉA",
+    "emoji": "🎭",
+    "couleur": "#7a3b8f",
+    "categorie": "nocturne",
+    "taille": "Réflexe : essayer des rôles avant de vivre les situations",
+    "anecdotes": [
+      "Jouer un entretien, un débat ou un conflit permet de s'entraîner sans risque avant la vraie vie.",
+      "Théâtre, expositions ouvertes à toutes et tous, veillées : la culture vit au cœur des actions des CEMÉA, comme les vernissages de Lille.",
+      "Après le jeu, le débriefing compte autant que la partie : qu'ai-je ressenti ? Qu'ai-je appris ?"
+    ],
+    "quiz": [
+      {
+        "q": "Le jeu de rôle pédagogique sert à…",
+        "options": [
+          "S'entraîner à des situations réelles sans risque",
+          "Perdre du temps",
+          "Éliminer les plus faibles"
+        ],
+        "reponse": 0
+      },
+      {
+        "q": "Après un jeu d'apprentissage, l'étape importante est…",
+        "options": [
+          "Le débriefing : ce qu'on a ressenti et appris",
+          "Range vite les chaises",
+          "Aucune"
+        ],
+        "reponse": 0
+      }
+    ]
   }
 ];
 
@@ -974,6 +1280,124 @@ const GUIDE = [
         "lycée"
       ]
     }
+  },
+  {
+    "type": "notion-guide",
+    "version": 1,
+    "img": "",
+    "categorie": "diurne",
+    "anecdotes": [
+      "« Les Ceméa » : Centres d'entraînement aux méthodes d'éducation active.",
+      "Reconnus nationalement d'utilité publique, les CEMÉA fêtent leurs 89 ans en 2026.",
+      "Le réseau est décentralisé : une association nationale tête de réseau et des associations régionales, en métropole comme en outre-mer."
+    ],
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 5,
+      "objectif": "Situer l'éducation populaire dans son contexte historique",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "histoire",
+    "nom": "Repères historiques",
+    "latin": "1936-1937 · le tournant populaire",
+    "emoji": "📜",
+    "couleur": "#3d4a6b",
+    "taille": "Repère : congés payés → éducation pour tous",
+    "description": "1936 : congés payés et front populaire. 1937 : naissance des CEMÉA. Puis Peuple et Culture, les MJC, les maisons de jeunes : tout un mouvement pour l'accès de tous à l'éducation et à la culture."
+  },
+  {
+    "type": "notion-guide",
+    "version": 1,
+    "img": "",
+    "categorie": "diurne",
+    "anecdotes": [
+      "Le BAFA permet d'encadrer des enfants en accueil collectif de mineurs.",
+      "Chaque année, les CEMÉA Nord-Pas-de-Calais proposent entre 60 et 85 stages BAFA et BAFD.",
+      "Le Service d'Aide au Placement (cemea-sap.fr) met en relation animateurs, directeurs et organisateurs d'accueils collectifs de mineurs."
+    ],
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 5,
+      "objectif": "Découvrir les parcours vers les métiers de l'animation",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "metiers-animation",
+    "nom": "Métiers de l'animation",
+    "latin": "BPJEPS · animation socio-éducative",
+    "emoji": "🎓",
+    "couleur": "#2a6e5a",
+    "taille": "Piste : du BAFA au BPJEPS",
+    "description": "Animateur ou animatrice, éducateur ou éducatrice, directeur de colo : ces métiers se préparent par la pratique — BAFA/BAFD dès 17 ans, BPJEPS, diplômes d'État — souvent en alternance."
+  },
+  {
+    "type": "notion-guide",
+    "version": 1,
+    "img": "",
+    "categorie": "diurne",
+    "anecdotes": [
+      "La typographie à l'école : les enfants imprimaient leurs propres textes.",
+      "Son héritage vit dans des centaines de classes coopératives actuelles."
+    ],
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 5,
+      "objectif": "Connaître quelques outils Freinet transposables en classe",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "freinet",
+    "nom": "La pédagogie Freinet",
+    "latin": "École moderne · Célestin Freinet",
+    "emoji": "🔧",
+    "couleur": "#b05f2a",
+    "taille": "Astuce : outils concrets, classe coopérative",
+    "description": "Célestin Freinet, instituteur, invente des outils simples et puissants : texte libre, correspondance scolaire, journal de classe, conseil coopératif, fichiers autocorrectifs. Sa devise implicite : les enfants font eux-mêmes."
+  },
+  {
+    "type": "notion-guide",
+    "version": 1,
+    "img": "",
+    "categorie": "diurne",
+    "anecdotes": [
+      "Pour beaucoup d'enfants, la première colo reste un souvenir fondateur.",
+      "Les séjours suivent une réglementation stricte (encadrement, projet pédagogique)."
+    ],
+    "pedagogie": {
+      "ages": [
+        8,
+        99
+      ],
+      "duree_min": 5,
+      "objectif": "Relier vacances et apprentissages informels",
+      "programme": [
+        "cycle 3",
+        "cycle 4"
+      ]
+    },
+    "id": "colos",
+    "nom": "Vacances apprenantes",
+    "latin": "Accueil collectif de mineurs",
+    "emoji": "🏕️",
+    "couleur": "#d98e04",
+    "taille": "Idée : partir loin, grandir beaucoup",
+    "description": "Colos et séjours « vacances apprenantes » mêlent jeu, découverte et renforcement des acquis : on y pratique les méthodes actives sans même s'en rendre compte. Encadrées par des équipes formées aux pédagogies de l'engagement."
   }
 ];
 
@@ -1482,6 +1906,354 @@ const BALISES = [
       }
     },
     "enigme": null
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C1",
+    "bird": "cooperation",
+    "code": "JDP-C1",
+    "label": "Le cercle d'entraide",
+    "x": 74,
+    "y": 452,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Ici, personne ne gagne seul : on avance en tirant tous dans le même sens. Quel principe suis-je ?",
+        "reponses": [
+          "cooperation",
+          "la cooperation",
+          "coopérer",
+          "cooperer"
+        ],
+        "indice": "Mon nom commence comme « opérer »… mais ensemble.",
+        "saviez": "Freinet appelait cela la « classe coopérative » : les élèves gèrent leur journal, leurs responsabilités, leur budget.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Je transforme un groupe d'élèves en équipe : tutorat, conseils, projets communs. La victoire de l'un devient celle de tous. Qui suis-je ?",
+        "reponses": [
+          "cooperation",
+          "pedagogie cooperative",
+          "la pedagogie cooperative"
+        ],
+        "indice": "On m'oppose souvent à la compétition.",
+        "saviez": "Expliquer à un pair oblige à organiser sa pensée : c'est pourquoi le tutorat profite aussi à celui qui explique.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Instituée par un maître d'école du Bar-sur-Loup, je remplace la rangée silencieuse par un atelier solidaire. Mon nom complet ?",
+        "reponses": [
+          "pedagogie cooperative freinet",
+          "la pedagogie cooperativa",
+          "cooperation"
+        ],
+        "indice": "Pensez à Célestin Freinet et à son École moderne.",
+        "saviez": "Le conseil de coopérative existe encore aujourd'hui dans de nombreuses classes françaises.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C2",
+    "bird": "methode-active",
+    "code": "JDP-C2",
+    "label": "L'atelier des mains",
+    "x": 148,
+    "y": 400,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "On ne m'apprend pas en écoutant seulement : il faut me toucher, me tester, me rater puis me réussir. Comment appelle-t-on cette façon d'apprendre ?",
+        "reponses": [
+          "methode active",
+          "methodes actives",
+          "apprendre en faisant",
+          "education active"
+        ],
+        "indice": "Mes mains ! Le corps participe.",
+        "saviez": "Les CEMÉA ont été créés en 1937 précisément pour entraîner aux méthodes d'éducation ACTIVE.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Je suis l'inverse du cours magistral pur : ici on expérimente, on cherche, on prouve. Mon nom ?",
+        "reponses": [
+          "methode active",
+          "pedagogie active",
+          "l education active"
+        ],
+        "indice": "Adjectif opposé à « passif ».",
+        "saviez": "Faire soi-même multiplie la mémorisation : c'est prouvé par les recherches en sciences cognitives.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Créés en 1937 pour former les cadres des colonies et des mouvements de jeunesse, ces centres portent mon nom dans leur intitulé. Lesquels ?",
+        "reponses": [
+          "cemea",
+          "les cemea",
+          "centres d entrainement aux methodes d education active"
+        ],
+        "indice": "Quatre lettres majuscules.",
+        "saviez": "Les CEMÉA forment toujours aujourd'hui animateurs, éducateurs et enseignants, en France et à l'international.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C3",
+    "bird": "expression",
+    "code": "JDP-C3",
+    "label": "La scène ouverte",
+    "x": 238,
+    "y": 292,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Écris, dessine, dis : ici ta parole vaut sans note ni sanction. Comment nomme-t-on cette liberté de s'exprimer ?",
+        "reponses": [
+          "expression libre",
+          "l expression libre",
+          "expression"
+        ],
+        "indice": "Libre comme l'oiseau — mais c'est ta voix qui s'envole.",
+        "saviez": "Le journal de classe imprimait les textes des élèves pour de vrais lecteurs : parents, correspondants, autres classes.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "On rejoue une dispute devant vous, puis on arrête tout : à vous de changer le cours de l'histoire. Quelle technique suis-je ?",
+        "reponses": [
+          "theatre forum",
+          "theatre-forum",
+          "le theatre forum"
+        ],
+        "indice": "Augusto Boal l'appelait aussi « théâtre des opprimés ».",
+        "saviez": "Le théâtre-forum est utilisé pour travailler citoyenneté, harcèlement, égalité : on répète à agir autrement.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "De Freinet à Boal, je suis le fil rouge : faire entendre celles et ceux qu'on n'écoute jamais. En deux mots ?",
+        "reponses": [
+          "expression libre",
+          "libre expression"
+        ],
+        "indice": "Deux mots : un verbe nominalisé + un adjectif.",
+        "saviez": "Prendre la parole en public figure parmi les compétences psychosociales recommandées par l'OMS.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C4",
+    "bird": "emancipation",
+    "code": "JDP-C4",
+    "label": "Le conseil des libres",
+    "x": 320,
+    "y": 320,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Grâce à moi, tu comprends mieux le monde et tu décides toi-même au lieu de subir. Que deviens-tu ainsi ?",
+        "reponses": [
+          "emancipe",
+          "émancipé",
+          "emancipee",
+          "plus libre",
+          "autonome"
+        ],
+        "indice": "Presque « mancipé »… mais débarrassé des chaînes de l'ignorance.",
+        "saviez": "« Émanciper » vient du droit romain : affranchir un enfant de l'autorité du père.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Lire un contrat, vérifier une info, argumenter calmement : ces savoirs-là rendent difficile à duper. Quel but poursuit l'éducation populaire à travers eux ?",
+        "reponses": [
+          "l emancipation",
+          "emancipation",
+          "rendre libre"
+        ],
+        "indice": "C'est le titre même de cette découverte.",
+        "saviez": "Condorcet proposait dès 1792 une instruction publique gratuite et égale pour toutes et tous.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Ni dressage ni remplissage : je suis le projet qui traverse de Condorcet aux CEMÉA — former des esprits libres capables de transformer leur monde. Un mot ?",
+        "reponses": [
+          "emancipation",
+          "l emancipation",
+          "emanciper"
+        ],
+        "indice": "Sept syllabes… presque une révolution.",
+        "saviez": "Pour l'éducation populaire, on n'apprend pas seulement pour l'école, mais pour agir dans la société.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C5",
+    "bird": "acces-tous",
+    "code": "JDP-C5",
+    "label": "La grande porte ouverte",
+    "x": 406,
+    "y": 448,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Depuis 1936, les vacances ne sont plus un privilège : elles deviennent un droit pour toutes et tous. Qui a organisé ces premiers loisirs populaires ?",
+        "reponses": [
+          "leo lagrange",
+          "lagrange"
+        ],
+        "indice": "Prénom d'un lion, nom d'un mathématicien célèbre.",
+        "saviez": "Léo Lagrange fut sous-secrétaire d'État aux Sports et à l'Organisation des Loisirs dès 1936.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Colos, MJC, bibliothèques de quartier : je veille à ce que la culture ne soit pas une marchandise de luxe. Comment appelle-t-on cet idéal ?",
+        "reponses": [
+          "democratie culturelle",
+          "la democratie culturelle",
+          "acces pour tous",
+          "culture pour tous"
+        ],
+        "indice": "Démocratie… mais côté culture.",
+        "saviez": "Les colonies de vacances ont accueilli des millions d'enfants depuis les années 1930.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Ma question rituelle : « Qui n'est pas venu ? Pourquoi ? Comment rouvrir la porte ? » Je suis la boussole de toute action d'éducation populaire. Quel principe ?",
+        "reponses": [
+          "acces de tous",
+          "l acces de tous a la culture",
+          "pour toutes et tous",
+          "democratie culturelle"
+        ],
+        "indice": "Cette découverte s'intitule « Pour … et … ».",
+        "saviez": "Ce souci d'accès irrigue aussi les politiques publiques : tarif réduit, transport solidaire, matériel prêté.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
+  },
+  {
+    "type": "balise",
+    "version": 1,
+    "id": "C6",
+    "bird": "jeu-role",
+    "code": "JDP-C6",
+    "label": "Le terrain des possibles",
+    "x": 388,
+    "y": 396,
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "hintImg": "",
+    "enigmes": {
+      "facile": {
+        "text": "Je te fais vivre un entretien ou un débat… pour de faux ! Demain, tu sauras le faire pour de vrai. Que pratique-t-on ici ?",
+        "reponses": [
+          "jeu de role",
+          "le jeu de role",
+          "mise en situation"
+        ],
+        "indice": "On endosse un personnage, comme au théâtre.",
+        "saviez": "Les pilotes s'entraînent sur simulateur : c'est le même principe pour les situations humaines.",
+        "ages": [
+          8,
+          10
+        ]
+      },
+      "moyen": {
+        "text": "Avant, je joue ; après, j'analyse : qu'ai-je ressenti, décidé, appris ? Comment s'appelle cette phase essentielle ?",
+        "reponses": [
+          "debriefing",
+          "le debriefing",
+          "debrief",
+          "retour d experience"
+        ],
+        "indice": "Mot anglais adopté en formation…",
+        "saviez": "Sans débriefing, le jeu reste un divertissement ; avec lui, il devient apprentissage.",
+        "ages": [
+          11,
+          13
+        ]
+      },
+      "difficile": {
+        "text": "Simuler pour ne pas subir : je suis la méthode signature des formations CEMÉA, où l'on éprouve les situations avant de les vivre. De quelle méthode parle-t-on ?",
+        "reponses": [
+          "mises en situation",
+          "mise en situation",
+          "jeux de role",
+          "simulation"
+        ],
+        "indice": "Pluriel conseillé : on n'éprouve jamais qu'une seule fois.",
+        "saviez": "Ces mises en situation préparent aux métiers de l'animation, du social et de l'éducation spécialisée.",
+        "ages": [
+          14,
+          99
+        ]
+      }
+    }
   }
 ];
 
@@ -1489,6 +2261,125 @@ const DIFFICULTIES = [
   { id: "facile", label: "Facile" },
   { id: "moyen", label: "Moyen" },
   { id: "difficile", label: "Difficile" },
+];
+
+/* Thèmes visuels sélectionnables dans Réglages (content/themes/) */
+const THEMES = [
+  {
+    "id": "defaut",
+    "nom": "Nuit étoilée",
+    "emoji": "🌙",
+    "description": "L'ambiance d'origine : nuit bleutée sous les étoiles.",
+    "meta": "#101822",
+    "fond": null,
+    "vars": {
+      "--bg": "#101822",
+      "--bg-soft": "#15202c",
+      "--card": "#1b2735",
+      "--card-soft": "#22303f",
+      "--ink": "#e8f0f5",
+      "--text-muted": "#b9c8d4",
+      "--primary": "#2fb97c",
+      "--primary-dark": "#1d8a5b",
+      "--gold": "#ffce3d",
+      "--err": "#ff7878",
+      "--ok": "#5fd68f",
+      "--line": "#33465a",
+      "--shadow": "0 6px 22px rgba(0, 0, 0, 0.45)"
+    }
+  },
+  {
+    "id": "nature",
+    "nom": "Nature",
+    "emoji": "🌿",
+    "description": "Sous-bois vert et mousse, pour les sentiers en forêt.",
+    "meta": "#122b18",
+    "fond": "radial-gradient(1200px 600px at 80% -10%, rgba(67, 196, 99, 0.14), transparent 60%), radial-gradient(900px 500px at -10% 100%, rgba(255, 210, 61, 0.08), transparent 55%)",
+    "vars": {
+      "--bg": "#0d2013",
+      "--bg-soft": "#122b1a",
+      "--card": "#173524",
+      "--card-soft": "#1d4029",
+      "--ink": "#eaf6ec",
+      "--text-muted": "#b2cfba",
+      "--primary": "#43c463",
+      "--primary-dark": "#2b9a48",
+      "--gold": "#ffd23d",
+      "--err": "#ff7878",
+      "--ok": "#71dd8f",
+      "--line": "#2c5038",
+      "--shadow": "0 6px 22px rgba(0, 0, 0, 0.45)"
+    }
+  },
+  {
+    "id": "espace",
+    "nom": "Espace",
+    "emoji": "🚀",
+    "description": "Cosmos profond, nébuleuses et constellations.",
+    "meta": "#0d1030",
+    "fond": "radial-gradient(1000px 520px at 75% -5%, rgba(129, 106, 255, 0.22), transparent 60%), radial-gradient(800px 420px at 10% 110%, rgba(64, 156, 255, 0.16), transparent 55%)",
+    "vars": {
+      "--bg": "#0a0e26",
+      "--bg-soft": "#101636",
+      "--card": "#171f47",
+      "--card-soft": "#1f2a58",
+      "--ink": "#ecf0ff",
+      "--text-muted": "#b7c1ea",
+      "--primary": "#6f8cff",
+      "--primary-dark": "#4c66d9",
+      "--gold": "#ffd76e",
+      "--err": "#ff8080",
+      "--ok": "#7ee2a8",
+      "--line": "#303c72",
+      "--shadow": "0 6px 24px rgba(0, 0, 10, 0.55)"
+    }
+  },
+  {
+    "id": "futuriste",
+    "nom": "Futuriste",
+    "emoji": "⚡",
+    "description": "Néons cyan et magenta sur asphalte nocturne.",
+    "meta": "#08131c",
+    "fond": "radial-gradient(900px 480px at 85% -10%, rgba(0, 229, 255, 0.16), transparent 60%), radial-gradient(700px 400px at 0% 105%, rgba(255, 45, 170, 0.13), transparent 55%)",
+    "vars": {
+      "--bg": "#071119",
+      "--bg-soft": "#0b1926",
+      "--card": "#0f2334",
+      "--card-soft": "#142d42",
+      "--ink": "#e6faff",
+      "--text-muted": "#9fc9da",
+      "--primary": "#00e5ff",
+      "--primary-dark": "#00a8bd",
+      "--gold": "#ffe066",
+      "--err": "#ff5d7a",
+      "--ok": "#3dffc0",
+      "--line": "#1d4058",
+      "--shadow": "0 6px 24px rgba(0, 20, 30, 0.6)"
+    }
+  },
+  {
+    "id": "retro",
+    "nom": "Rétro",
+    "emoji": "📼",
+    "description": "Sepia chaud des soirées diapo et cassettes VHS.",
+    "meta": "#241a0e",
+    "fond": "radial-gradient(1000px 520px at 80% -10%, rgba(255, 170, 60, 0.14), transparent 60%), radial-gradient(800px 460px at 5% 105%, rgba(200, 90, 40, 0.12), transparent 55%)",
+    "vars": {
+      "--bg": "#221708",
+      "--bg-soft": "#2c1f0d",
+      "--card": "#382713",
+      "--card-soft": "#44301a",
+      "--ink": "#fdf3dd",
+      "--text-muted": "#d3bd97",
+      "--primary": "#ffab40",
+      "--primary-dark": "#d98a25",
+      "--gold": "#ffd76e",
+      "--err": "#ff8674",
+      "--ok": "#ffd76e",
+      "--line": "#5a4326",
+      "--shadow": "0 6px 22px rgba(20, 10, 0, 0.5)"
+    }
+  }
 ];
 /* ==== FIN CONTENU GÉNÉRÉ ==== */
 

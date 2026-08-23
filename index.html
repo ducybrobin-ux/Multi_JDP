@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0c3b2e" id="meta-theme">
-  <meta name="description" content="JDP_BC — Jeu de piste Biais Cognitif. Jeu en famille sur les pièges de l'esprit : carte interactive, QR codes, énigmes et quiz. Fonctionne hors-ligne.">
+  <meta name="description" content="Multi JDP — Jeux de piste éducatifs. Jeu en famille : carte interactive, QR codes, énigmes et quiz. Fonctionne hors-ligne.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="JDP_BC">
+  <meta name="apple-mobile-web-app-title" content="Multi JDP">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="img/icon.svg">
@@ -16,12 +16,25 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <script>
+    /* Anti-flash : applique le thème mis en cache avant le premier rendu. */
+    (function () {
+      try {
+        var c = JSON.parse(localStorage.getItem("jdp_theme_cache") || "null");
+        if (c && c.id && c.id !== "defaut" && c.vars) {
+          Object.keys(c.vars).forEach(function (k) { document.body.style.setProperty(k, c.vars[k]); });
+          var m = document.getElementById("meta-theme");
+          if (m && c.meta) m.content = c.meta;
+        }
+      } catch (e) {}
+    })();
+  </script>
   <a class="skip-link" href="#app" data-i18n="skip_link">Aller au contenu</a>
 
   <header id="topbar" class="topbar">
     <button id="btn-home" class="icon-btn" data-i18n-aria="btn_home" aria-label="Accueil">⌂</button>
-    <img id="topbar-logo" class="topbar-logo" src="img/logo.svg" alt="JDP_BC — Jeu de piste Biais Cognitif">
-    <h1 id="page-title">JDP_BC</h1>
+    <img id="topbar-logo" class="topbar-logo" src="img/logo.svg" alt="Multi JDP — Jeux de piste éducatifs">
+    <h1 id="page-title">Multi JDP</h1>
     <button id="btn-voice" class="icon-btn" data-i18n-aria="btn_voice" aria-label="Lire l'écran à voix haute" data-i18n-title="btn_voice" title="Lire l'écran à voix haute">🔊</button>
     <button id="btn-night" class="icon-btn" data-i18n-aria="btn_night" title="Mode nuit" data-i18n-title="btn_night">☾</button>
   </header>
@@ -31,10 +44,10 @@
     <!-- ================= ACCUEIL ================= -->
     <section class="screen" id="screen-home" data-title="home">
       <div class="hero-card">
-        <img class="hero-logo" src="img/logo.svg" alt="JDP_BC — Jeu de piste Biais Cognitif">
-        <p class="hero-kicker" data-i18n="home_kicker">Le jeu de piste de l'esprit</p>
-        <h2 class="hero-title">Jeu de piste Biais Cognitif</h2>
-        <p class="hero-slogan" data-i18n="home_slogan">Suis le sentier, résous les énigmes, démasque les pièges de ton cerveau&nbsp;!</p>
+        <img class="hero-logo" src="img/logo.svg" alt="Multi JDP — Jeux de piste éducatifs">
+        <p class="hero-kicker" data-i18n="home_kicker">Les jeux de piste éducatifs</p>
+        <h2 class="hero-title">Multi Jeu de Piste</h2>
+        <p class="hero-slogan" data-i18n="home_slogan">Suis le sentier, résous les énigmes, deviens passeur·se de savoirs&nbsp;!</p>
         <div id="home-offline" class="status-pill hidden" data-i18n="home_offline">Hors-ligne — tout est prêt</div>
         <button class="btn btn-primary btn-big" id="btn-play" data-i18n="home_play">▶ Commencer le jeu</button>
         <button class="btn btn-ghost" id="btn-open-carnet-home" data-i18n="home_carnet_btn">📔 Mon carnet d'observation</button>
@@ -76,31 +89,32 @@
       </div>
 
       <div class="home-footer-tip" id="home-tip"></div>
-      <p class="author-note" data-i18n="author_note">🧠 Un jeu pour explorer les méandres de l'esprit.</p>
+      <p class="author-note" data-i18n="author_note">🤝 Des jeux pour transmettre et apprendre ensemble.</p>
     </section>
 
     <!-- ================= INTRODUCTION (histoire + règlement + sécurité) ================= -->
     <section class="screen" id="screen-intro" data-title="intro">
       <div class="intro-card">
-        <div class="big-emoji">🧠</div>
-        <h2 class="intro-title" data-i18n="intro_title">Jeu de piste</h2>
+        <div class="big-emoji">🔥</div>
+        <h2 class="intro-title" data-i18n="intro_title">Multi Jeu de Piste</h2>
         <div class="intro-story" id="intro-story" data-i18n="intro_story">
-          La nuit tombe sur le site. Dans le silence, votre cerveau se met à murmurer…
-          Huit pièges mentaux, huit biais cachés, ont glissé une énigme sur chaque balise du sentier.
-          Votre famille doit les démasquer, résoudre leurs devinettes, reconnaître leurs
-          signatures sonores et prouver sa lucidité pour inscrire son nom dans la légende de la semaine.
+          La nuit tombe sur le site. Autour du feu de camp, la veillée commence…
+          Sur le sentier se cachent des découvertes de tous horizons — pièges de l'esprit,
+          éducation populaire et bien plus. Une énigme s'est glissée sur chaque balise :
+          à votre famille de la résoudre, de reconnaître les signatures sonores et
+          d'inscrire son nom dans la légende de la semaine.
         </div>
 
         <h3 class="intro-h" data-i18n="intro_rules_title">📜 Règlement du jeu</h3>
         <ul class="intro-list" id="intro-rules">
           <li id="rule-classic-1" data-i18n="rule_1">Suivez le sentier dans l'ordre : la carte indique toujours la prochaine balise.</li>
-          <li id="rule-classic-2" data-i18n="rule_2">Chaque balise cache une énigme : répondez juste pour démasquer le piège.</li>
+          <li id="rule-classic-2" data-i18n="rule_2">Chaque balise cache une énigme : répondez juste pour découvrir l'idée cachée.</li>
           <li id="rule-classic-3" data-i18n="rule_3">Écoutez sa signature sonore puis réussissez le quiz pour valider l'étape.</li>
-          <li id="rule-classic-4" data-i18n="rule_4">Vous avez 8 synapses à connecter : utilisez-les à bon escient.</li>
+          <li id="rule-classic-4" data-i18n="rule_4">Vos graines sont à planter : utilisez-les à bon escient.</li>
           <li id="rule-classic-5" data-i18n="rule_5">Le palmarès récompense les familles les plus observatrices.</li>
           <li id="rule-random-1" class="hidden" data-i18n="rule_random_1">Les balises arrivent dans le désordre : la carte indique toujours la prochaine étape.</li>
           <li id="rule-race-1" class="hidden" data-i18n="rule_race_1">Chaque balise est validée en scannant son QR code : aucune question, aucune énigme.</li>
-          <li id="rule-race-2" class="hidden" data-i18n="rule_race_2">Le parcours est tiré au sort : toutes les équipes passent les 8 balises.</li>
+          <li id="rule-race-2" class="hidden" data-i18n="rule_race_2">Le parcours est tiré au sort : toutes les équipes passent toutes les balises.</li>
           <li id="rule-race-3" class="hidden" data-i18n="rule_race_3">Le chronomètre tourne : la famille la plus rapide remporte la course !</li>
         </ul>
 
@@ -110,7 +124,7 @@
           <li data-i18n="safety_2">Ne grimpez pas sur les poteaux et restez sur le sentier balisé.</li>
           <li data-i18n="safety_3">À la tombée de la nuit, allumez vos lampes et restez dans les zones éclairées.</li>
           <li data-i18n="safety_4">Buvez, chapeau si le soleil tape, et prévenez un adulte si quelqu'un s'éloigne.</li>
-          <li data-i18n="safety_5">Respectez le calme du lieu : on chuchote pour mieux écouter son esprit.</li>
+          <li data-i18n="safety_5">Respectez le calme du lieu : on chuchote pour mieux écouter la nature.</li>
         </ul>
 
         <button class="btn btn-primary btn-big" id="btn-intro-start" data-i18n="intro_start">🌙 C'est parti, en route !</button>
@@ -121,11 +135,11 @@
     <section class="screen" id="screen-end" data-title="end">
       <div class="intro-card end-card">
         <div class="big-emoji">🏆</div>
-        <h2 class="intro-title" data-i18n="end_title">L'esprit est affûté !</h2>
+        <h2 class="intro-title" data-i18n="end_title">Le sentier est bouclé !</h2>
         <div class="intro-story" id="end-story" data-i18n="end_story">
-          Les huit pièges de l'esprit ont été démasqués par votre famille. Chaque synapse
-          connectée a rendu votre lucidité plus vive, et votre nom rejoint la galerie des esprits malins.
-          Bravo, explorateurs !
+          Toutes les étapes du sentier ont été parcourues par votre famille. Chaque
+          découverte partagée a rendu votre groupe plus fort, et votre nom rejoint la
+          galerie des passeurs. Bravo, explorateurs !
         </div>
         <div id="end-stats" class="end-stats"></div>
         <div id="end-race" class="end-race hidden">
@@ -323,6 +337,19 @@
           <span data-i18n="set_night">Thème nuit (idée : soirée = espèces nocturnes 🌙)</span>
           <input type="checkbox" id="set-night">
         </label>
+        <h3 class="subtitle" data-i18n="set_theme_title">Thème visuel</h3>
+        <label class="setting-row">
+          <span data-i18n="set_theme">🎨 Thème du jeu</span>
+          <select id="set-theme"></select>
+        </label>
+        <div class="setting-row hidden" id="row-theme-pass">
+          <input type="password" id="set-theme-pass" data-i18n-placeholder="theme_pass_ph" placeholder="Mot de passe organisateur…" autocomplete="off">
+          <button type="button" class="btn btn-ghost btn-mini" id="btn-theme-unlock" data-i18n="btn_theme_unlock">🔓 Déverrouiller</button>
+        </div>
+        <div class="setting-row hidden" id="row-theme-admin">
+          <span data-i18n="theme_pass_admin">🔐 Mot de passe des thèmes (vide = protection désactivée)</span>
+          <input type="text" id="set-theme-newpass" placeholder="••••" autocomplete="off">
+        </div>
         <label class="setting-row">
           <span data-i18n="set_sound">Sons et ambiances</span>
           <input type="checkbox" id="set-sound">
@@ -417,7 +444,7 @@
     <!-- ================= GUIDE DES DÉCOUVERTES ================= -->
     <section class="screen" id="screen-guide" data-title="guide">
       <button class="btn btn-outline" id="btn-guide-back" data-i18n="guide_back">← Retour</button>
-      <p class="screen-intro" data-i18n="guide_intro">Les pièges du parcours et d'autres curiosités de l'esprit. Touchez une carte pour en savoir plus.</p>
+      <p class="screen-intro" data-i18n="guide_intro">Les notions du parcours et des outils pour transmettre. Touchez une carte pour en savoir plus.</p>
       <div id="guide-grid" class="guide-grid"></div>
       <a class="btn btn-outline" id="btn-fiche-pdf" href="docs/fiche-pedagogique-JDP_BC.pdf" target="_blank" rel="noopener" data-i18n="guide_fiche_pdf">📄 Fiche pédagogique (PDF)</a>
     </section>
@@ -511,7 +538,7 @@
       <p class="note race-warn" data-i18n="race_warn_points">⚠️ Sans les énigmes ni les quiz, vos points (⭐) risquent de ne pas suffire pour apparaître dans le palmarès classique.</p>
       <p class="note" data-i18n="race_opp_question">Contre quelles équipes connectées au serveur voulez-vous courir ?</p>
       <div id="race-opponents" class="race-opponents"><p class="empty" data-i18n="race_opp_loading">Recherche des équipes connectées…</p></div>
-      <p class="note race-rule" data-i18n="race_rule">Aucune question : validez chaque balise par QR code. Le parcours est tiré au sort — toutes les équipes valident les 8 balises, et le plus rapide gagne.</p>
+      <p class="note race-rule" data-i18n="race_rule">Aucune question : validez chaque balise par QR code. Le parcours est tiré au sort — toutes les équipes valident toutes les balises, et le plus rapide gagne.</p>
       <div class="gb-save-row">
         <button type="button" class="btn btn-primary" id="btn-race-start" data-i18n="race_btn_start">🚀 C'est parti !</button>
         <button type="button" class="btn btn-ghost" id="btn-race-cancel" data-i18n="guestbook_btn_cancel">Annuler</button>

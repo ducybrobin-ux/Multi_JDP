@@ -1,13 +1,13 @@
-/* =========================================================
+﻿/* =========================================================
    JDP — Service worker
    Mode hors-ligne : toutes les données (cartes, sons,
    fiches) sont mises en cache au premier chargement sur le
    Wi-Fi du site, puis disponibles en zone blanche.
    ========================================================= */
 
-const VERSION = "jdpbc-v2";
-const CACHE = "jdpbc-core-v2";
-const RUNTIME = "jdpbc-runtime-v2";
+const VERSION = "jdpbc-v3";
+const CACHE = "jdpbc-core-v3";
+const RUNTIME = "jdpbc-runtime-v3";
 
 const PRECACHE = [
   "./",

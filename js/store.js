@@ -7,7 +7,7 @@ const Store = (function () {
   const KEY = "jdp_data_v1";
 
   const DEFAULTS = {
-    settings: { night: false, sound: true, hints: true, volume: 80, lang: "fr", difficulty: "facile", adminOff: false, proximityEmoji: "faces", race: false, testerQ: false, alertSound: "signature", alertCustom: "" },
+    settings: { night: false, sound: true, hints: true, volume: 80, lang: "fr", difficulty: "facile", adminOff: false, proximityEmoji: "faces", race: false, testerQ: false, alertSound: "signature", alertCustom: "", theme: "defaut", themePass: "Sam" },
     profiles: [],
     activeProfileId: null,
   };

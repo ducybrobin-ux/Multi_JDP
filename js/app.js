@@ -240,7 +240,7 @@
     if (p) {
       const done = p.completed.length;
       const seeds = Store.seedsLeft(p.id);
-      prog.innerHTML = `👨‍👩‍👧‍👦 <strong>${esc(p.name)}</strong> · ${done}/${BALISES.length} balises · ⭐ ${p.stars} · 🧠 ${seeds} synapse${seeds > 1 ? "s" : ""}`;
+      prog.innerHTML = `👨‍👩‍👧‍👦 <strong>${esc(p.name)}</strong> · ${done}/${BALISES.length} balises · ⭐ ${p.stars} · 🌱 ${seeds} graine${seeds > 1 ? "s" : ""}`;
       $("btn-play").textContent = done >= BALISES.length ? I18N.t("home_play_replay") : I18N.t("home_play_continue");
       if (isGod) {
         tip.textContent = "🛠️ Profil « Admin » : le mode admin est activé (codes, QR codes, navigation directe).";
@@ -788,8 +788,8 @@
     renderOffer(balise);
   }
 
-  /* Synapses : à chaque bonne réponse, la famille peut
-     connecter une synapse dans son cerveau (stock distribué en début de jeu). */
+  /* Graines : à chaque bonne réponse, la famille peut
+     planter une graine (stock distribué en début de jeu). */
   function renderOffer(balise) {
     const box = $("offer-box");
     if (!box) return;
@@ -1299,7 +1299,7 @@
   function sharePalmares() {
     const active = Store.getActive();
     if (!active) { toast("Crée d'abord un profil."); return; }
-    const txt = `🧠 ${active.name} — Jeu de piste\n${active.completed.length}/${BALISES.length} balises, ${active.birds.length} pièges démasqués, ⭐ ${active.stars}.${active.offered ? ` 🧠 ${active.offered} synapses connectées.` : ""}${active.message ? `\n« ${active.message} »` : ""}`;
+    const txt = `🔥 ${active.name} — Multi Jeu de Piste\n${active.completed.length}/${BALISES.length} balises, ${active.birds.length} découvertes faites, ⭐ ${active.stars}.${active.offered ? ` 🌱 ${active.offered} graines plantées.` : ""}${active.message ? `\n« ${active.message} »` : ""}`;
     if (navigator.share) {
       navigator.share({ text: txt }).catch(() => {});
     } else if (navigator.clipboard) {
@@ -1373,6 +1373,32 @@
   }
 
   /* ---------- RÉGLAGES ---------- */
+  /* ---- Thèmes visuels (content/themes → THEMES dans data.js) ---- */
+  let themeBound = false;
+  let themeUnlocked = false;
+  let themePending = null;
+  function findTheme(id) {
+    return (typeof THEMES !== "undefined" ? THEMES : []).find((t) => t.id === id) || null;
+  }
+  /* Applique les variables du thème en inline sur <body> (bat body.night,
+     donc pas de flash au chargement grâce au cache jdp_theme_cache). */
+  function applyTheme(id) {
+    const t = findTheme(id) || findTheme("defaut");
+    if (!t) return;
+    const meta = document.getElementById("meta-theme");
+    if (t.id === "defaut") {
+      const all = {};
+      (typeof THEMES !== "undefined" ? THEMES : []).forEach((th) => Object.assign(all, th.vars || {}));
+      Object.keys(all).forEach((k) => document.body.style.removeProperty(k));
+      try { localStorage.removeItem("jdp_theme_cache"); } catch (e) {}
+      if (meta) meta.content = Store.getSettings().night ? "#101822" : "#0c3b2e";
+      return;
+    }
+    Object.keys(t.vars).forEach((k) => document.body.style.setProperty(k, t.vars[k]));
+    try { localStorage.setItem("jdp_theme_cache", JSON.stringify({ id: t.id, vars: t.vars, meta: t.meta || "" })); } catch (e) {}
+    if (meta && t.meta) meta.content = t.meta;
+  }
+
   function applySettings() {
     const s = Store.getSettings();
     document.body.classList.toggle("night", s.night);
@@ -1392,8 +1418,7 @@
       const rowActions = $("row-alert-actions");
       if (rowActions) rowActions.classList.toggle("hidden", alertSel.value === "signature");
     }
-    const meta = document.getElementById("meta-theme");
-    if (meta) meta.content = s.night ? "#101822" : "#0c3b2e";
+    applyTheme(s.theme);
     updateNightBadge();
   }
 
@@ -2357,6 +2382,60 @@
           I18N.apply();
         });
       });
+    }
+    // Thème visuel (protégé par le mot de passe organisateur, défaut « Sam »)
+    const thSel = $("set-theme");
+    if (thSel && !themeBound) {
+      themeBound = true;
+      thSel.addEventListener("change", () => {
+        const s = Store.getSettings();
+        const id = thSel.value;
+        if (s.themePass && !themeUnlocked && id !== s.theme) {
+          thSel.value = s.theme || "defaut";
+          themePending = id;
+          const rowPass = $("row-theme-pass");
+          if (rowPass) rowPass.classList.remove("hidden");
+          $("set-theme-pass").value = "";
+          toast(I18N.t("theme_locked_toast"));
+          return;
+        }
+        Store.setSettings({ theme: id });
+        applySettings();
+        const t = findTheme(id);
+        toast(I18N.fmt(I18N.t("theme_changed"), { nom: t ? ((t.emoji ? t.emoji + " " : "") + t.nom) : id }));
+      });
+      $("btn-theme-unlock").addEventListener("click", () => {
+        const s = Store.getSettings();
+        if (!s.themePass || $("set-theme-pass").value === s.themePass) {
+          themeUnlocked = true;
+          themePending = null;
+          const rowPass = $("row-theme-pass");
+          if (rowPass) rowPass.classList.add("hidden");
+          toast(I18N.t("theme_pass_ok"));
+        } else {
+          toast(I18N.t("theme_pass_ko"));
+        }
+      });
+      $("set-theme-pass").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); $("btn-theme-unlock").click(); }
+      });
+      $("set-theme-newpass").addEventListener("change", (e) => {
+        const v = e.target.value.trim();
+        Store.setSettings({ themePass: v });
+        if (!v) { themeUnlocked = true; }
+        toast(I18N.t("theme_pass_saved"));
+      });
+    }
+    if (thSel) {
+      const list = typeof THEMES !== "undefined" ? THEMES : [];
+      thSel.innerHTML = list.map((t) =>
+        `<option value="${esc(t.id)}">${esc((t.emoji ? t.emoji + " " : "") + t.nom)}</option>`).join("");
+      thSel.value = Store.getSettings().theme || "defaut";
+      const isSamT = !!Store.getActive() && isGodProfile(Store.getActive());
+      const adminRowT = $("row-theme-admin");
+      if (adminRowT) adminRowT.classList.toggle("hidden", !isSamT);
+      const rowPassT = $("row-theme-pass");
+      if (rowPassT) rowPassT.classList.toggle("hidden", !(Store.getSettings().themePass && !themeUnlocked));
     }
     // Difficulté des énigmes
     const diff = Store.getSettings().difficulty || "facile";

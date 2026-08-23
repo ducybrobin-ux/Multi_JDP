@@ -1,7 +1,7 @@
 {
-  "name": "JDP_BC — Jeu de piste Biais Cognitif",
-  "short_name": "JDP_BC",
-  "description": "Jeu de piste familial autour des neurosciences et des biais cognitifs : sentier, QR codes, énigmes, quiz, avertisseur sonore. Fonctionne hors-ligne.",
+  "name": "Multi JDP — Jeux de piste éducatifs",
+  "short_name": "Multi JDP",
+  "description": "Jeux de piste éducatifs en famille : sentier, QR codes, énigmes, quiz, avertisseur sonore. Packs modulaires et thèmes personnalisables. Fonctionne hors-ligne.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

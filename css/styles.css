@@ -480,6 +480,21 @@ body.night .balise.locked circle { fill: #405368; }
 }
 .setting-row input[type="checkbox"] { width: 26px; height: 26px; accent-color: var(--primary); }
 .setting-row input[type="range"] { flex: 1; accent-color: var(--primary); }
+#row-theme-pass,
+#row-theme-admin { flex-wrap: wrap; gap: 8px; }
+#set-theme-pass,
+#set-theme-newpass {
+  flex: 1 1 160px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius, 12px);
+  background: var(--card-soft);
+  color: var(--ink);
+}
+.setting-row select {
+  max-width: 55%;
+}
 
 /* ---------- Sélecteur langue / difficulté ---------- */
 .lang-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 4px; }

@@ -8,7 +8,7 @@
   "properties": {
     "type": { "const": "balise" },
     "version": { "type": "integer", "minimum": 1 },
-    "id": { "type": "string", "pattern": "^B[0-9]+$" },
+    "id": { "type": "string", "pattern": "^[A-Z]{0,3}[0-9]{1,2}$", "description": "B1 (biais), C1 (cemea), HS1, MT1… préfixe libre de 0 à 3 lettres" },
     "bird": { "type": "string", "description": "id de la découverte associée (doit exister dans le pack)" },
     "code": { "type": "string", "description": "Code de validation saisi (ex. JDP-B1)" },
     "label": { "type": "string" },

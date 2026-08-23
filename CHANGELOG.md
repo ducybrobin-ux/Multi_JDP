@@ -1,7 +1,21 @@
 # Journal des modifications
 
-Toutes les évolutions notables de JDP_BC sont documentées ici.
+Toutes les évolutions notables de Multi JDP sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
+
+## [2.0.0] — 2026-08-23
+
+### Ajouté
+- **Plateforme multi-packs** : le parcours combine les packs actifs de `content/manifest.json` — 🧠 `biais-cognitifs` + 🤝 `cemea-education-populaire` (14 découvertes, 14 notions, 14 balises) ; modules 🛡️ `harcelement-scolaire` (cycle 3/4) et 🚜 `metiers-tension` (orientation 3e) livrés prêts à activer
+- **Thèmes visuels** (`content/themes/*.json`) : Nuit étoilée, Nature, Espace, Futuriste, Rétro — appliqués en direct, anti-flash au démarrage, meta theme-color synchronisée
+- **Mot de passe organisateur** sur le changement de thème (défaut `Sam`, modifiable depuis Réglages par le profil Admin) ; déverrouillage valable pour la session
+- Schéma balise assoupli : codes multi-packs (`B1`, `C1`, `HS1`, `MT1`…)
+
+### Modifié
+- Habillage neutre et inclusif (« Multi Jeu de Piste », métaphore des graines 🌱) ; les contenus spécifiques restent dans leurs packs
+
+### Compatibilité
+- Identifiants historiques conservés (`BIRDS`, `chant`, préfixes éditeur) ; données de partie locales inchangées
 
 ## [1.1.1] — 2026-08-23
 
