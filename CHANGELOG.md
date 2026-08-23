@@ -6,6 +6,9 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — 
 ## [2.0.1] — 2026-08-23
 
 ### Ajouté
+- **Précision GPS maximale** : acquisition à la meilleure fixe (`watchPosition` jusqu'à ±5 m ou fin de fenêtre) dans l'éditeur ET dans le jeu ; cercle d'incertitude affiché sur la carte de l'éditeur
+- **Mode terrain ⛓️** : après chaque capture réussie, la balise suivante s'ouvre automatiquement — placement sur site en une marche
+- **Rayon de validation par balise** : champ optionnel `radius` (mètres) dans les balises JSON ; défaut global resserré de 30 m à **12 m**
 - **Pack CEMÉA étendu à 11 balises** : nouvelles découvertes Éducation du Dehors, Erasmus+, Yakamédia, Économie sociale, Accueillir tout·es — parcours CEMÉA complet positionné sur les repères GPS réels du site (import depuis Google My Maps)
 - **Éditeur de carte** : import KML / Google My Maps par URL (proxy serveur `/api/kml`, anti-CORS) ou fichier `.kml` ; attribution des repères aux balises dans l'ordre, recentrage automatique
 - **Recherche dans l'éditeur de carte** : retrouvez une balise par numéro, code ou nom et centrez la carte dessus

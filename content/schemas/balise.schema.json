@@ -16,6 +16,7 @@
     "y": { "type": "number" },
     "lat": { "type": "number" },
     "lng": { "type": "number" },
+    "radius": { "type": "number", "exclusiveMinimum": 0, "description": "Rayon de validation GPS propre a la balise (metres). Defaut : SITE.proximityRadius (12 m)" },
     "hintImg": { "type": "string" },
     "enigmes": {
       "type": "object",

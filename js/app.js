@@ -624,7 +624,29 @@
     sendUrgency("message", msg.value);
   }
 
-  function onGpsPressed() {
+  /* Garde la meilleure fixe GPS sur une fenêtre courte (précision maximale). */
+  function gpsBestFix(maxMs, goodEnough, onAcc) {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error("GPS indisponible")); return; }
+      let best = null, done = false, watchId = null;
+      const accOf = (p) => (p.coords.accuracy == null ? 9999 : p.coords.accuracy);
+      const stop = () => { if (watchId != null) { navigator.geolocation.clearWatch(watchId); watchId = null; } };
+      const finish = () => { if (done) return; done = true; stop(); if (best) resolve(best); else reject(new Error("aucune position")); };
+      const t0 = Date.now();
+      watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          if (!best || accOf(pos) < accOf(best)) best = pos;
+          if (onAcc) { try { onAcc(accOf(pos)); } catch (e) {} }
+          if (accOf(pos) <= goodEnough || Date.now() - t0 >= maxMs) finish();
+        },
+        (err) => { if (!done && !best) { done = true; stop(); reject(err); } },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: maxMs }
+      );
+      setTimeout(finish, maxMs + 1500);
+    });
+  }
+
+  async function onGpsPressed() {
     const t = currentTarget();
     if (!t) { toast("Toutes les balises sont déjà validées. 🎉"); return; }
     if (!navigator.geolocation) { toast("GPS indisponible sur cet appareil."); return; }
@@ -632,9 +654,11 @@
       toast("GPS bloqué : page chargée hors contexte sécurisé. Rechargez via https://localhost:8443 (ou l'adresse HTTPS affichée par le serveur).");
       return;
     }
-    navigator.geolocation.getCurrentPosition((pos) => {
+    const r = Number.isFinite(t.radius) && t.radius > 0 ? t.radius : SITE.proximityRadius;
+    toast("🎯 Recherche de la position la plus précise…");
+    try {
+      const pos = await gpsBestFix(10000, 5, null);
       const d = AudioSys.haversine(pos.coords.latitude, pos.coords.longitude, t.lat, t.lng);
-      const r = SITE.proximityRadius;
       if (d <= r) {
         toast("Vous êtes sur la balise ! ✔");
         handleBaliseFound(t, "gps");
@@ -642,7 +666,9 @@
         const m = Math.round(d);
         toast(`Encore ~${m} m pour rejoindre la balise ${t.id}. Les indices sonores t'aident ! 🔈`);
       }
-    }, () => toast("Position introuvable : vérifiez le GPS."), { enableHighAccuracy: true, timeout: 12000 });
+    } catch (e) {
+      toast("Position introuvable : vérifiez le GPS.");
+    }
   }
 
   /* ---------- FLUX DE VALIDATION ---------- */

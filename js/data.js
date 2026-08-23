@@ -18,7 +18,7 @@ const SITE = {
   // Position du centre du site (GPS) — À RÉGLER via l'éditeur
   // (« Ma position GPS » sur chaque balise) avant le terrain.
   center: { lat: 50.6314885, lng: 3.0558956 },
-  proximityRadius: 30, // en mètres : distance pour valider par GPS
+  proximityRadius: 12, // en mètres : distance pour valider par GPS
   hintRadius: 250,     // en mètres : à partir d'où le signal sonore guide
   photos: [],
 };

@@ -176,6 +176,7 @@
             <button id="btn-map-add" class="btn btn-outline" onclick="mapEdToggleAdd()">➕ Ajouter une balise</button>
             <button class="btn btn-outline" onclick="mapEdFitAll()">🔍 Tout afficher</button>
             <button class="btn btn-outline" onclick="mapEdLocateMe()">📍 Me localiser</button>
+            <button id="btn-map-chain" class="btn btn-outline" onclick="mapEdChainToggle()">⛓️ Mode terrain</button>
             <button class="btn btn-outline" onclick="openMapFullscreen()">🖥️ Plein écran</button>
             <button id="btn-map-import" class="btn btn-outline" onclick="mapEdToggleImport()">⬇️ Importer KML / My Maps</button>
             <button class="btn btn-outline" onclick="mapEdAutoLayout()">🧭 Ajuster la carte du jeu</button>
@@ -1101,30 +1102,106 @@
       setStatus("📍 Coordonnées de la balise " + id + " : " + b.lat + ", " + b.lng, "ok");
     }
 
-    function mapEdUseGps(id) {
-      const b = getBalise(id);
-      if (!b) return;
-      if (!navigator.geolocation) { setStatus("❌ GPS indisponible sur cet appareil.", "err"); return; }
-      setStatus("📍 Recherche de la position GPS…", "ok");
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          b.lat = +pos.coords.latitude.toFixed(7);
-          b.lng = +pos.coords.longitude.toFixed(7);
-          syncBaliseLatLngToForm(b);
-          const m = markerById(id);
-          if (m) {
-            m.setLatLng([b.lat, b.lng]);
-            m.setPopupContent(mapEdPopupHtml(b));
-            m.openPopup();
-            if (mapEditor) mapEditor.setView([b.lat, b.lng], mapEditor.getZoom());
+        /* ---------- GPS de précision : conserve la meilleure fixe ---------- */
+        let __mapAccCircle = null;
+        let __mapChain = false;
+
+        function gpsBestFix(opts) {
+          const maxMs = (opts && opts.maxMs) || 20000;
+          const good = (opts && opts.goodEnough) != null ? opts.goodEnough : 6;
+          const onAcc = opts && opts.onAccuracy;
+          return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) { reject(new Error("GPS indisponible sur cet appareil.")); return; }
+            let best = null, done = false, watchId = null;
+            const accOf = (p) => (p.coords.accuracy == null ? 9999 : p.coords.accuracy);
+            const stop = () => { if (watchId != null) { navigator.geolocation.clearWatch(watchId); watchId = null; } };
+            const finish = () => {
+              if (done) return;
+              done = true; stop();
+              if (best) resolve(best); else reject(new Error("aucune position reçue"));
+            };
+            const t0 = Date.now();
+            watchId = navigator.geolocation.watchPosition(
+              (pos) => {
+                if (!best || accOf(pos) < accOf(best)) best = pos;
+                if (onAcc) { try { onAcc(accOf(pos)); } catch (e) {} }
+                if (accOf(pos) <= good || Date.now() - t0 >= maxMs) finish();
+              },
+              (err) => {
+                if (!done && !best) { done = true; stop(); reject(new Error(err && err.message ? err.message : "position refusée")); }
+              },
+              { enableHighAccuracy: true, maximumAge: 0, timeout: maxMs }
+            );
+            setTimeout(finish, maxMs + 1500);
+          });
+        }
+
+        function showAccuracyCircle(lat, lng, accM) {
+          if (!mapEditor || !window.L) return;
+          if (__mapAccCircle) { mapEditor.removeLayer(__mapAccCircle); }
+          __mapAccCircle = L.circle([lat, lng], {
+            radius: Math.max(accM, 1),
+            color: "#e67e22", weight: 2, fillColor: "#e67e22", fillOpacity: 0.12
+          }).addTo(mapEditor);
+          setTimeout(() => {
+            if (__mapAccCircle) { mapEditor.removeLayer(__mapAccCircle); __mapAccCircle = null; }
+          }, 12000);
+        }
+
+        function mapEdChainToggle() {
+          __mapChain = !__mapChain;
+          const btn = document.getElementById("btn-map-chain");
+          if (btn) btn.classList.toggle("active", __mapChain);
+          setStatus(__mapChain
+            ? "⛓️ Mode terrain actif : après chaque capture réussie, la balise suivante s'ouvre automatiquement."
+            : "Mode terrain désactivé.", "ok");
+        }
+
+        async function mapEdUseGps(id) {
+          const b = getBalise(id);
+          if (!b) return;
+          setStatus("🎯 Acquisition précise pour " + id + "… restez immobile au point exact.", "");
+          try {
+            const pos = await gpsBestFix({
+              maxMs: 25000,
+              goodEnough: 5,
+              onAccuracy: (acc) => setStatus("🎯 " + id + " : précision ≈ " + Math.round(acc) + " m…", "")
+            });
+            const acc = Math.round(pos.coords.accuracy == null ? 0 : pos.coords.accuracy);
+            b.lat = +pos.coords.latitude.toFixed(7);
+            b.lng = +pos.coords.longitude.toFixed(7);
+            syncBaliseLatLngToForm(b);
+            const m = markerById(id);
+            if (m) {
+              m.setLatLng([b.lat, b.lng]);
+              m.setPopupContent(mapEdPopupHtml(b));
+              m.openPopup();
+              if (mapEditor) mapEditor.setView([b.lat, b.lng], Math.max(mapEditor.getZoom(), 18));
+            }
+            showAccuracyCircle(b.lat, b.lng, pos.coords.accuracy || 3);
+            syncToOpener();
+            let msg = "✅ Balise " + id + " capturée à ±" + acc + " m (" + b.lat + ", " + b.lng + "). Pensez à 💾 Enregistrer.";
+            if (__mapChain) {
+              const idx = BALISES.indexOf(b);
+              const next = idx !== -1 ? BALISES[idx + 1] : null;
+              if (next) {
+                const nm = markerById(next.id);
+                if (nm && mapEditor) {
+                  mapEditor.setView([isFinite(next.lat) ? next.lat : b.lat, isFinite(next.lng) ? next.lng : b.lng], Math.max(mapEditor.getZoom(), 18));
+                  nm.openPopup();
+                }
+                msg += " ⛓️ Suivante : " + next.id + " — marchez jusqu'au point, la capture part toute seule.";
+                setTimeout(() => { if (__mapChain) mapEdUseGps(next.id); }, 1200);
+              } else {
+                msg += " 🏁 Dernière balise du parcours !";
+              }
+            }
+            setStatus(msg, "ok");
+          } catch (e) {
+            setStatus("❌ Capture impossible (" + e.message + "). Vérifiez le ciel dégagé ou saisissez à la main.", "err");
           }
-          syncToOpener();
-          setStatus("📍 Position GPS attribuée à la balise " + id + " : " + b.lat + ", " + b.lng, "ok");
-        },
-        (err) => setStatus("❌ Position refusée (" + (err && err.message ? err.message : "erreur GPS") + ").", "err"),
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
-      );
-    }
+        }
+
 
     function mapEdCenterOn(id) {
       const b = getBalise(id);
@@ -1391,27 +1468,29 @@
       }
     });
 
-    /* ---------- GPS : position réelle d'une balise ---------- */
-    function useMyGps(id) {
-      const latEl = document.getElementById("b-" + id + "-lat");
-      const lngEl = document.getElementById("b-" + id + "-lng");
-      if (!latEl || !lngEl) { setStatus("❌ Champs Latitude/Longitude introuvables pour la balise " + id + ".", "err"); return; }
-      if (!navigator.geolocation) { setStatus("❌ GPS indisponible sur cet appareil — saisissez les coordonnées à la main.", "err"); return; }
-      setStatus("📍 Recherche de la position GPS…", "ok");
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          latEl.value = pos.coords.latitude.toFixed(7);
-          lngEl.value = pos.coords.longitude.toFixed(7);
-          const card = document.querySelector('[data-balise="' + id + '"]');
-          if (card) markChanged(card);
-          setStatus("📍 Position GPS attribuée à la balise " + id + " : " + latEl.value + ", " + lngEl.value, "ok");
-        },
-        (err) => {
-          setStatus("❌ Position refusée ou indisponible (" + (err && err.message ? err.message : "erreur GPS") + "). Saisissez les coordonnées à la main.", "err");
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
-      );
-    }
+        /* ---------- GPS : position réelle d'une balise (capture précise) ---------- */
+        async function useMyGps(id) {
+          const latEl = document.getElementById("b-" + id + "-lat");
+          const lngEl = document.getElementById("b-" + id + "-lng");
+          if (!latEl || !lngEl) { setStatus("❌ Champs Latitude/Longitude introuvables pour la balise " + id + ".", "err"); return; }
+          setStatus("🎯 Acquisition précise pour " + id + "… restez immobile au point exact.", "");
+          try {
+            const pos = await gpsBestFix({
+              maxMs: 25000,
+              goodEnough: 5,
+              onAccuracy: (acc) => setStatus("🎯 " + id + " : précision ≈ " + Math.round(acc) + " m…", "")
+            });
+            latEl.value = pos.coords.latitude.toFixed(7);
+            lngEl.value = pos.coords.longitude.toFixed(7);
+            const card = document.querySelector('[data-balise="' + id + '"]');
+            if (card) markChanged(card);
+            const acc = Math.round(pos.coords.accuracy == null ? 0 : pos.coords.accuracy);
+            setStatus("✅ Position de " + id + " capturée à ±" + acc + " m : " + latEl.value + ", " + lngEl.value, "ok");
+          } catch (err) {
+            setStatus("❌ Capture impossible (" + err.message + "). Saisissez les coordonnées à la main.", "err");
+          }
+        }
+
 
     /* ---------- IA : génération locale des énigmes (indépendante du thème) ---------- */
     function genReponses(s) {
