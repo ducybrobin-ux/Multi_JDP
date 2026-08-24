@@ -100,6 +100,7 @@ const I18N = (function () {
       theme_changed: "🎨 Thème appliqué : {nom}",
       theme_pass_admin: "🔐 Mot de passe des thèmes (vide = protection désactivée)",
       theme_pass_saved: "💾 Mot de passe des thèmes mis à jour.",
+      theme_lock_hint: "🔒 Changement de thème protégé par le mot de passe organisateur (défaut : Sam).",
       set_night: "Thème nuit (idée : soirée = espèces nocturnes 🌙)",
       set_sound: "Sons et ambiances",
       set_hints: "Indices sonores quand on s'approche d'une balise",

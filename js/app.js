@@ -2460,8 +2460,10 @@
       const isSamT = !!Store.getActive() && isGodProfile(Store.getActive());
       const adminRowT = $("row-theme-admin");
       if (adminRowT) adminRowT.classList.toggle("hidden", !isSamT);
+      const lockHint = $("row-theme-lock-hint");
+      if (lockHint) lockHint.classList.toggle("hidden", !Store.getSettings().themePass);
       const rowPassT = $("row-theme-pass");
-      if (rowPassT) rowPassT.classList.toggle("hidden", !(Store.getSettings().themePass && !themeUnlocked));
+      if (rowPassT) rowPassT.classList.toggle("hidden", !Store.getSettings().themePass);
     }
     // Difficulté des énigmes
     const diff = Store.getSettings().difficulty || "facile";

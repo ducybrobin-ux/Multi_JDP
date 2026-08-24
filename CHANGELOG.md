@@ -3,6 +3,16 @@
 Toutes les évolutions notables de Multi JDP sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
 
+## [2.0.2] — 2026-08-23
+
+### Ajouté
+- **Panneau « 📏 Terrain »** dans l'éditeur : distances réelles entre balises consécutives, longueur totale du parcours, alerte quand les cercles de validation GPS se chevauchent (→ QR code ou rayon plus petit)
+- **Rayon GPS par balise éditable** : champ « Rayon GPS propre » dans le formulaire de chaque balise
+
+### Modifié
+- **Mot de passe des thèmes toujours visible** dans Réglages dès que la protection est active, avec rappel du mot de passe par défaut (Sam) — plus besoin de tenter un changement pour découvrir le champ
+- Service workers reversionnés (v5 / v3) pour invalider les caches des visiteurs
+
 ## [2.0.1] — 2026-08-23
 
 ### Ajouté
