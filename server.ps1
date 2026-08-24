@@ -795,41 +795,54 @@ function Handle-Client([System.Net.Sockets.TcpClient]$Client, [System.IO.Stream]
             if ($method -eq 'POST') {
                 $payload = $null
                 try { $payload = ConvertFrom-Json -InputObject $body } catch {}
+                $name = ''
+                if ($payload) { $name = [string]$payload.team }
+                if (-not $name) {
+                    Send-Response $Stream 400 "Bad Request" "{`"ok`":false}" "application/json; charset=utf-8"
+                    return
+                }
                 $lat = 0.0; $lng = 0.0
                 if ($payload) {
                     try { $lat = [double]$payload.lat } catch {}
                     try { $lng = [double]$payload.lng } catch {}
                 }
-                $name = [string]$payload.team
-                if ($name -and $lat -ne 0 -and $lng -ne 0 -and $lat -gt -90 -and $lat -lt 90 -and $lng -gt -180 -and $lng -lt 180) {
-                    $now = (Get-Date).ToUniversalTime()
-                    $found = $false
-                    for ($i = 0; $i -lt $script:Positions.Count; $i++) {
-                        if ($script:Positions[$i].team -ieq $name) {
-                            $script:Positions[$i].lat = $lat
-                            $script:Positions[$i].lng = $lng
-                            $script:Positions[$i].at = $now
-                            $found = $true
-                            break
-                        }
-                    }
-                    if (-not $found) {
-                        [void]$script:Positions.Add([ordered]@{ team = $name; lat = $lat; lng = $lng; at = $now })
-                        if ($script:Positions.Count -gt 40) { $script:Positions.RemoveAt(0) }
-                    }
-                    $script:PositionSeq++
-                    Send-Response $Stream 200 "OK" "{`"ok`":true}" "application/json; charset=utf-8"
-                    return
+                $now = (Get-Date).ToUniversalTime()
+                $entry = $null
+                for ($i = 0; $i -lt $script:Positions.Count; $i++) {
+                    if ($script:Positions[$i].team -ieq $name) { $entry = $script:Positions[$i]; break }
                 }
-                Send-Response $Stream 400 "Bad Request" "{`"ok`":false}" "application/json; charset=utf-8"
+                if (-not $entry) {
+                    $entry = [ordered]@{ team = $name; lat = 0.0; lng = 0.0; at = $null; seen = $now; acc = $null; bat = $null; chg = $null; onl = $null; net = ''; cam = '' }
+                    [void]$script:Positions.Add($entry)
+                    if ($script:Positions.Count -gt 60) { $script:Positions.RemoveAt(0) }
+                }
+                if ($lat -ne 0 -and $lng -ne 0 -and $lat -gt -90 -and $lat -lt 90 -and $lng -gt -180 -and $lng -lt 180) {
+                    $entry.lat = $lat
+                    $entry.lng = $lng
+                    $entry.at = $now
+                }
+                $entry.seen = $now
+                foreach ($k in @('acc','bat','onl','net','cam')) {
+                    try { if ($null -ne $payload.$k -and '' -ne [string]$payload.$k) { $entry[$k] = $payload.$k } } catch {}
+                }
+                try { if ($null -ne $payload.chg) { $entry.chg = [bool]$payload.chg } } catch {}
+                $script:PositionSeq++
+                Send-Response $Stream 200 "OK" "{`"ok`":true}" "application/json; charset=utf-8"
                 return
             }
-            # GET : positions récentes (moins de 3 min)
+            # GET : positions récentes (moins de 3 min) + états des appareils (15 min)
             $now = (Get-Date).ToUniversalTime()
-            $fresh = @($script:Positions | Where-Object { ($now - $_.at).TotalMinutes -lt 3 })
+            $fresh = @($script:Positions | Where-Object { $_.at -and ($now - $_.at).TotalMinutes -lt 3 })
+            $statuses = @($script:Positions | Where-Object { $_.seen -and ($now - $_.seen).TotalMinutes -lt 15 })
             $payload = @{
                 seq = $script:PositionSeq
-                positions = @($fresh | ForEach-Object { @{ team = $_.team; lat = $_.lat; lng = $_.lng; at = $_.at.ToString('HH:mm:ss') } })
+                positions = @($fresh | ForEach-Object { @{ team = $_.team; lat = $_.lat; lng = $_.lng; at = $_.at.ToString('HH:mm:ss'); acc = $_.acc } })
+                statuses = @($statuses | ForEach-Object { @{
+                    team = $_.team; bat = $_.bat; chg = $_.chg; onl = $_.onl; net = $_.net; cam = $_.cam; acc = $_.acc
+                    seen = if ($_.seen) { $_.seen.ToString('HH:mm:ss') } else { '' }
+                    posAt = if ($_.at) { $_.at.ToString('HH:mm:ss') } else { '' }
+                    lat = $_.lat; lng = $_.lng
+                } })
             }
             Send-Response $Stream 200 "OK" ($payload | ConvertTo-Json -Compress -Depth 5) "application/json; charset=utf-8"
             return

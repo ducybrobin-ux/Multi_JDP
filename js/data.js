@@ -1666,8 +1666,8 @@ const BALISES = [
     "code": "JDP-B1",
     "x": 74,
     "y": 452,
-    "lat": 48.8566,
-    "lng": 2.3522,
+    "lat": 50.7258178,
+    "lng": 3.1329639,
     "label": "La cabane à idées",
     "hintImg": "",
     "enigmes": {
@@ -2172,8 +2172,8 @@ const BALISES = [
     "label": "Le cercle d'entraide",
     "x": 240,
     "y": 105,
-    "lat": 50.6314837,
-    "lng": 3.0558926,
+    "lat": 50.7258178,
+    "lng": 3.1329639,
     "hintImg": "",
     "enigmes": {
       "facile": {
@@ -2944,6 +2944,9 @@ const THEMES = [
   }
 ];
 /* ==== FIN CONTENU GÉNÉRÉ ==== */
+
+/* Toutes les découvertes : celles du parcours + celles du guide embarqué */
+function allBirds() { return BIRDS.concat(GUIDE); }
 
 function getBird(id) { return allBirds().find((b) => b.id === id); }
 function getBalise(id) { return BALISES.find((b) => b.id === id); }

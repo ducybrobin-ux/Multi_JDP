@@ -98,6 +98,34 @@
     .val-chip.on { background: var(--ok); border-color: var(--ok); color: #fff; }
     .val-chip:hover { transform: scale(1.07); }
     .val-chip:active { transform: scale(0.95); }
+    /* ---------- Familles : état des appareils ---------- */
+    .fam-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .fam-card {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+      background: var(--card-soft); border: 2px solid var(--line); border-radius: 12px;
+      padding: 8px 12px;
+    }
+    .fam-card.fam-stale { opacity: 0.55; }
+    .fam-name { font-weight: 800; display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+    .fam-tags { display: flex; flex-wrap: wrap; gap: 3px 10px; font-size: 14px; color: var(--text-muted); }
+    .fam-tag { white-space: nowrap; }
+    .fam-tag.ok { color: var(--ok); }
+    .fam-tag.ko { color: var(--err); }
+    /* ---------- Modes de validation à distance ---------- */
+    .val-modes {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+      margin-top: 8px; padding: 8px 10px;
+      border: 1px dashed var(--line); border-radius: 10px;
+    }
+    .val-modes .vm-label { font-weight: 800; font-size: 13px; color: var(--text-muted); }
+    .vm-btn {
+      border: 2px solid var(--line); background: var(--card); color: var(--text);
+      border-radius: 999px; padding: 4px 11px; font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: transform .15s;
+    }
+    .vm-btn:hover { transform: scale(1.06); border-color: var(--primary); }
+    .vm-btn.danger { border-color: var(--err); color: var(--err); }
+    .val-qbox { margin-top: 6px; font-size: 14px; line-height: 1.45; width: 100%; }
     /* ---------- Serveur : modes Local / Internet ---------- */
     .mode-checks { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 10px; }
     .chk {
@@ -325,6 +353,11 @@
               </div>
               <div id="val-list"><p class="empty" data-i18n="val_empty">Aucune équipe pour l'instant.</p></div>
             </section>
+            <section class="dash-card">
+              <h2 data-i18n="fam_title">📱 Familles — connexion & appareils</h2>
+              <p class="note" id="fam-status" data-i18n="fam_wait">En attente des connexions…</p>
+              <div id="fam-list"><p class="empty" data-i18n="fam_empty">Aucune famille connectée pour l'instant.</p></div>
+            </section>
           </td>
           <td>
             <section class="dash-card">
@@ -449,6 +482,18 @@
         val_status: "{n} équipe(s) — cliquez sur une balise pour la valider ou la dévalider pour l'équipe.",
         val_on: "validée (cliquer pour retirer)", val_off: "non validée (cliquer pour valider)",
         val_need_name: "⚠️ Entrez un nom d'équipe.", val_added: "✅ Équipe « {name} » ajoutée.", val_add_fail: "❌ Échec de l'ajout.", val_toggle_fail: "❌ Échec de la mise à jour.",
+        fam_title: "📱 Familles — connexion & appareils", fam_wait: "En attente des connexions…",
+        fam_empty: "Aucune famille connectée pour l'instant.", fam_n: "{n} appareil(s) connu(s) — états rafraîchis toutes les 5 s.",
+        fam_online: "📶 en ligne", fam_offline: "📴 hors ligne", fam_net: " ({net})",
+        fam_cam_ok: "📷 autorisée", fam_cam_no: "📷 refusée", fam_cam_ask: "📷 non demandée",
+        fam_seen: "vu à {t}",
+        val_mode_title: "Valider {id} :", vm_manual: "✋ Manuel", vm_gps: "🛰️ GPS", vm_q: "❓ Question", vm_code: "🔑 Code",
+        vm_remove: "➖ Retirer la validation",
+        vm_gps_ok: "Famille à {d} m de la balise — validée.", vm_gps_far: "Trop loin : {d} m (rayon ~{r} m). GPS non concluant.",
+        vm_gps_nopos: "⚠️ Aucune position GPS récente pour cette équipe.",
+        vm_q_title: "Énigme — balise {id}", vm_q_answers: "Réponses acceptées : {a}", vm_q_validate: "✅ Valider (réponse vérifiée)",
+        vm_code_prompt: "Code inscrit sur la balise {id} :", vm_code_bad: "❌ Code incorrect.",
+        val_removed: "➖ Balise {id} retirée.",
         map_title: "🗺️ Carte du parcours", map_note: "Collez l'URL d'une carte (Google Maps, OpenStreetMap…) montrant le parcours. Un bouton « Voir le parcours » apparaîtra sur l'écran Carte des participants.",
         map_ph: "https://www.google.com/maps/dir/…", map_save: "💾 Enregistrer", map_none: "Aucune carte configurée pour l'instant.",
         map_active: "Carte active : {url}", map_saved: "✅ Carte du parcours enregistrée.", map_deleted: "✅ Carte du parcours supprimée.",
@@ -944,18 +989,119 @@
       });
     }
 
+    let lastStatuses = [];
+    function hmsToSec(s) {
+      const m = /^(\d{1,2}):(\d{2}):(\d{2})$/.exec(String(s || ""));
+      return m ? (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]) : null;
+    }
+    function ageSec(hms) {
+      const v = hmsToSec(hms);
+      if (v == null) return null;
+      const n = new Date();
+      const u = n.getUTCHours() * 3600 + n.getUTCMinutes() * 60 + n.getUTCSeconds();
+      let d = u - v;
+      if (d < -43200) d += 86400;
+      return d;
+    }
+    function hav(lat1, lng1, lat2, lng2) {
+      const R = 6371000, rad = Math.PI / 180;
+      const dLat = (lat2 - lat1) * rad, dLng = (lng2 - lng1) * rad;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+    function teamCoords(name) {
+      const k = String(name || "").toLowerCase();
+      const st = lastStatuses.find((s) => String(s.team || "").toLowerCase() === k);
+      const po = lastPositions.find((s) => String(s.team || "").toLowerCase() === k);
+      const src = po && Number(po.lat) ? po : (st && Number(st.lat) ? st : null);
+      return src ? { lat: Number(src.lat), lng: Number(src.lng) } : null;
+    }
+
     async function refreshPos() {
       try {
         const res = await fetch("/api/pos");
         const data = await res.json();
         const list = data.positions || [];
         lastPositions = list;
+        lastStatuses = data.statuses || [];
         drawPosMap(list);
         $("pos-status").textContent = list.length
           ? TF("pos_visible", { n: list.length })
           : T("pos_none");
         renderPosChips(list);
+        renderFamilies();
       } catch (e) { /* silencieux */ }
+    }
+
+    /* ---------- Familles : connexion & appareils ---------- */
+    function renderFamilies() {
+      const box = $("fam-list");
+      if (!box) return;
+      const teams = new Map();
+      const add = (name) => {
+        const k = String(name || "").toLowerCase();
+        if (k && !teams.has(k)) teams.set(k, { name: name });
+      };
+      Object.keys(lastValidations || {}).forEach((k) => add(k));
+      (lastStatuses || []).forEach((s) => add(s.team));
+      lastPositions.forEach((p) => add(p.team));
+      finishedTeams.forEach((f) => add(f.team));
+      const list = Array.from(teams.values()).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      const status = $("fam-status");
+      if (!list.length) {
+        box.innerHTML = '<p class="empty">' + esc(T("fam_empty")) + "</p>";
+        status.textContent = T("fam_wait");
+        return;
+      }
+      status.textContent = TF("fam_n", { n: list.length });
+      box.innerHTML = "";
+      list.forEach((tm, i) => {
+        const k = tm.name.toLowerCase();
+        const st = (lastStatuses || []).find((s) => String(s.team || "").toLowerCase() === k) || {};
+        const done = new Set(lastValidations[tm.name] || lastValidations[k] || []);
+        const fin = isFinished(tm.name);
+        const age = ageSec(st.seen);
+        const stale = age == null || age > 180;
+        const card = document.createElement("div");
+        card.className = "fam-card" + (stale ? " fam-stale" : "");
+        const col = TEAM_COLORS[i % TEAM_COLORS.length];
+        const parts = [];
+        parts.push('<span class="fam-name"><span class="pos-dot" style="background:' + col + '"></span>' + (fin ? "🏁 " : "") + esc(tm.name) + "</span>");
+        parts.push('<span class="fam-tags">');
+        const onl = Number(st.onl);
+        parts.push('<span class="fam-tag ' + (onl === 1 ? "ok" : (onl === 0 ? "ko" : "")) + '">' +
+          (onl === 1 ? T("fam_online") : (onl === 0 ? T("fam_offline") : "📶 —")) +
+          (st.net ? TF("fam_net", { net: esc(st.net) }) : "") + "</span>");
+        if (st.bat != null && st.bat !== "") {
+          parts.push('<span class="fam-tag">🔋 ' + esc(String(st.bat)) + " %" + (st.chg ? " ⚡" : "") + "</span>");
+        } else {
+          parts.push('<span class="fam-tag">🔋 —</span>');
+        }
+        const cam = String(st.cam || "");
+        parts.push('<span class="fam-tag ' + (cam === "granted" ? "ok" : (cam === "denied" ? "ko" : "")) + '">' +
+          (cam === "granted" ? T("fam_cam_ok") : (cam === "denied" ? T("fam_cam_no") : (cam === "prompt" ? T("fam_cam_ask") : "📷 —"))) + "</span>");
+        if (st.acc != null && st.acc !== "") {
+          parts.push('<span class="fam-tag">🛰️ ±' + esc(String(st.acc)) + " m" + (st.posAt ? " (" + esc(st.posAt) + ")" : "") + "</span>");
+        } else {
+          parts.push('<span class="fam-tag">🛰️ —</span>');
+        }
+        parts.push('<span class="fam-tag">✅ ' + done.size + "/" + BALISES.length + "</span>");
+        if (st.seen) parts.push('<span class="fam-tag">👁️ ' + TF("fam_seen", { t: esc(st.seen) }) + "</span>");
+        parts.push("</span>");
+        card.innerHTML = parts.join("");
+        const kick = document.createElement("button");
+        kick.type = "button";
+        kick.className = "kick-btn";
+        kick.title = TF("pos_kick_title", { team: tm.name });
+        kick.textContent = "⏻";
+        kick.addEventListener("click", async () => {
+          if (!confirm(TF("pos_kick_confirm", { team: tm.name }))) return;
+          const r = await postBoard("logout", { team: tm.name });
+          if (r.ok) window.HermesToast(TF("pos_kicked", { team: tm.name }));
+        });
+        card.appendChild(kick);
+        box.appendChild(card);
+      });
     }
 
     function renderFinishList() {
@@ -1160,12 +1306,99 @@
           chip.className = "val-chip" + (isOn ? " on" : "");
           chip.textContent = bb.id;
           chip.title = (bb.label || bb.id) + " — " + (isOn ? T("val_on") : T("val_off"));
-          chip.addEventListener("click", () => toggleBalise(tm.name, bb.id, !isOn));
+          chip.addEventListener("click", () => openValModes(div, tm.name, bb, isOn));
           chips.appendChild(chip);
         });
         div.appendChild(chips);
         box.appendChild(div);
       });
+    }
+
+    /* ---------- Modes de validation à distance ---------- */
+    let openValKey = null;
+    function normCode(s) {
+      return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+    }
+    function closeValMenus() {
+      document.querySelectorAll(".val-modes").forEach((el) => el.remove());
+      openValKey = null;
+    }
+    function openValModes(teamDiv, team, balise, isOn) {
+      const key = team.toLowerCase() + "/" + balise.id;
+      const had = openValKey === key;
+      closeValMenus();
+      if (had) return;
+      openValKey = key;
+      const menu = document.createElement("div");
+      menu.className = "val-modes";
+      const label = document.createElement("span");
+      label.className = "vm-label";
+      label.textContent = TF("val_mode_title", { id: balise.id });
+      menu.appendChild(label);
+      const mkBtn = (txt, fn, cls) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "vm-btn" + (cls ? " " + cls : "");
+        b.textContent = txt;
+        b.addEventListener("click", fn);
+        return b;
+      };
+      if (!isOn) {
+        menu.appendChild(mkBtn(T("vm_manual"), async () => { closeValMenus(); await toggleBalise(team, balise.id, true); }, ""));
+        menu.appendChild(mkBtn(T("vm_gps"), () => validateByGps(team, balise), ""));
+        menu.appendChild(mkBtn(T("vm_q"), () => showValQuestion(menu, team, balise), ""));
+        menu.appendChild(mkBtn(T("vm_code"), () => validateByCode(team, balise), ""));
+      } else {
+        menu.appendChild(mkBtn(T("vm_remove"), async () => { closeValMenus(); window.HermesToast(TF("val_removed", { id: balise.id })); await toggleBalise(team, balise.id, false); }, "danger"));
+      }
+      const cancel = mkBtn("✕", () => closeValMenus(), "danger");
+      menu.appendChild(cancel);
+      teamDiv.appendChild(menu);
+    }
+    function showValQuestion(menu, team, balise) {
+      let qbox = menu.querySelector(".val-qbox");
+      if (qbox) { qbox.remove(); return; }
+      qbox = document.createElement("div");
+      qbox.className = "val-qbox";
+      const e = getEnigme(balise, "facile") || {};
+      const answers = Array.isArray(e.reponses) ? e.reponses.join(", ") : "";
+      qbox.innerHTML = "<b>" + esc(TF("vm_q_title", { id: balise.id })) + "</b><br>" +
+        esc(e.text || "") + "<br><small>" + esc(TF("vm_q_answers", { a: answers })) + "</small>";
+      const ok = document.createElement("button");
+      ok.type = "button";
+      ok.className = "vm-btn";
+      ok.style.marginTop = "6px";
+      ok.textContent = T("vm_q_validate");
+      ok.addEventListener("click", async () => {
+        closeValMenus();
+        await toggleBalise(team, balise.id, true);
+      });
+      qbox.appendChild(ok);
+      menu.appendChild(qbox);
+    }
+    function validateByGps(team, balise) {
+      const c = teamCoords(team);
+      if (!c) { window.HermesToast(T("vm_gps_nopos")); return; }
+      const rBase = Number(balise.radius) > 0 ? Number(balise.radius) : (Number(SITE.proximityRadius) > 0 ? Number(SITE.proximityRadius) : 12);
+      const r = rBase + 15;
+      const d = hav(c.lat, c.lng, Number(balise.lat), Number(balise.lng));
+      if (d <= r) {
+        window.HermesToast("🛰️ " + TF("vm_gps_ok", { d: Math.round(d) }));
+        closeValMenus();
+        toggleBalise(team, balise.id, true);
+      } else {
+        window.HermesToast("❌ " + TF("vm_gps_far", { d: Math.round(d), r: Math.round(r) }));
+      }
+    }
+    function validateByCode(team, balise) {
+      const c = window.prompt(TF("vm_code_prompt", { id: balise.id }), "");
+      if (c == null) return;
+      if (normCode(c) === normCode(balise.code)) {
+        closeValMenus();
+        toggleBalise(team, balise.id, true);
+      } else {
+        window.HermesToast(T("vm_code_bad"));
+      }
     }
 
     /* ---------- QR d'accès : Wi-Fi (1) puis jeu (2) ---------- */

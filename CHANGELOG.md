@@ -3,6 +3,20 @@
 Toutes les évolutions notables de Multi JDP sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnement sémantique.
 
+## [2.0.3] — 2026-08-24
+
+### Corrigé
+- **Blocage après la validation d'une énigme** : la fonction `allBirds()` (découvertes + guide) avait été perdue lors du passage au contenu modulaire — `getBird()` échouait, la fiche découverte ne s'affichait plus (plus de boussole, d'émojis ni de son). Fonction restaurée dans le moteur
+
+### Ajouté
+- **Panneau « 📱 Familles »** dans le tableau de bord : état de connexion de chaque famille en direct — en ligne/hors ligne + type de réseau (wifi/4g…), batterie (%) et charge ⚡, autorisation caméra 📷, précision GPS 🛰️ (± m) avec heure du dernier fix, balises validées ✅ n/N, dernier signe de vie 👁️ — et bouton ⏻ pour déconnecter la famille
+- **Télémétrie des appareils** : l'application envoie désormais toutes les 20 s batterie/réseau/caméra/GPS au serveur (en plus des positions), visibles par l'organisateur
+- **Validation à distance multi-modes** : dans « Balises validées par équipe », cliquer une balise ouvre le choix ✋ Manuel · 🛰️ GPS (vérifie que la famille est bien sur place via sa dernière position) · ❓ Question (affiche l'énigme et les réponses acceptées) · 🔑 Code (saisie du code de la balise)
+
+### Modifié
+- Première balise de chaque pack repositionnée sur le point de départ commun des événements (50.7258178, 3.1329639)
+- Service worker reversionné (v7)
+
 ## [2.0.2] — 2026-08-23
 
 ### Ajouté

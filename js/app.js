@@ -548,10 +548,36 @@
     if (!window.isSecureContext) return;
     if (App.watchId != null) return;
     App.watchId = navigator.geolocation.watchPosition(
-      (pos) => { App.lastPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }; reportPos(); },
+      (pos) => { App.lastPos = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy }; reportPos(); },
       null,
       { enableHighAccuracy: true, maximumAge: 3000, timeout: 10000 }
     );
+  }
+
+  /* --- Télémétrie des familles (tableau de bord : réseau, batterie, photo, GPS) --- */
+  const Telem = { bat: null, chg: null, cam: "" };
+  function telemBody(p) {
+    let net = "";
+    try { net = (navigator.connection && navigator.connection.effectiveType) || ""; } catch (e) {}
+    return {
+      team: p.name,
+      online: navigator.onLine ? 1 : 0,
+      netType: net,
+      bat: Telem.bat,
+      chg: Telem.chg === true ? 1 : 0,
+      cam: Telem.cam,
+      acc: App.lastPos && App.lastPos.acc != null ? Math.round(App.lastPos.acc) : null,
+    };
+  }
+  function postTelemetry(extra) {
+    const p = Store.getActive();
+    if (!p || isGodProfile(p)) return;
+    const body = Object.assign(telemBody(p), extra || {});
+    fetch("/api/pos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).catch(() => {});
   }
 
   /* --- Suivi des équipes (tableau de bord organisateur) --- */
@@ -562,12 +588,32 @@
     const now = Date.now();
     if (now - lastPosReport < 10000) return;
     lastPosReport = now;
-    fetch("/api/pos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ team: p.name, lat: App.lastPos.lat, lng: App.lastPos.lng }),
-    }).catch(() => {});
+    postTelemetry({ lat: App.lastPos.lat, lng: App.lastPos.lng });
   }
+  (function initTelemetry() {
+    try {
+      if (navigator.getBattery) {
+        navigator.getBattery().then((b) => {
+          const upd = () => { Telem.bat = Math.round(b.level * 100); Telem.chg = !!b.charging; };
+          upd();
+          b.addEventListener("levelchange", upd);
+          b.addEventListener("chargingchange", upd);
+        }).catch(() => {});
+      }
+    } catch (e) {}
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        navigator.permissions.query({ name: "camera" }).then((st) => {
+          Telem.cam = st.state || "";
+          st.onchange = () => { Telem.cam = st.state || ""; };
+        }).catch(() => {});
+      }
+    } catch (e) {}
+  })();
+  setInterval(() => {
+    const p = Store.getActive();
+    if (p && !isGodProfile(p)) postTelemetry(App.lastPos ? { lat: App.lastPos.lat, lng: App.lastPos.lng } : null);
+  }, 20000);
 
   /* --- Synchronisation des balises validées avec le tableau de bord --- */
   function postValidation(team, baliseId) {
