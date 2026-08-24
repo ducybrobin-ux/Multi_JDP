@@ -254,7 +254,68 @@
       $("btn-play").textContent = I18N.t("home_play");
       tip.textContent = I18N.t("home_tip_offline");
     }
+    renderHomeTheme();
+    const outBtn = $("btn-home-logout");
+    if (outBtn) outBtn.classList.toggle("hidden", !p);
     updateNightBadge();
+  }
+
+  /* Sélecteur de thème directement sur l'accueil (même protection que Réglages). */
+  let homeThemeBound = false;
+  function renderHomeTheme() {
+    const sel = $("home-theme");
+    if (!sel) return;
+    if (!homeThemeBound) {
+      homeThemeBound = true;
+      sel.addEventListener("change", () => {
+        const s = Store.getSettings();
+        const id = sel.value;
+        if (s.themePass && !themeUnlocked && id !== s.theme) {
+          sel.value = s.theme || "defaut";
+          themePending = id;
+          const rowPass = $("row-home-theme-pass");
+          if (rowPass) rowPass.classList.remove("hidden");
+          $("home-theme-pass").value = "";
+          toast(I18N.t("theme_locked_toast"));
+          return;
+        }
+        Store.setSettings({ theme: id });
+        applySettings();
+        const t = findTheme(id);
+        toast(I18N.fmt(I18N.t("theme_changed"), { nom: t ? ((t.emoji ? t.emoji + " " : "") + t.nom) : id }));
+      });
+      $("btn-home-unlock").addEventListener("click", () => {
+        const s = Store.getSettings();
+        if (!s.themePass || $("home-theme-pass").value === s.themePass) {
+          themeUnlocked = true;
+          themePending = null;
+          const rowPass = $("row-home-theme-pass");
+          if (rowPass) rowPass.classList.add("hidden");
+          toast(I18N.t("theme_pass_ok"));
+        } else {
+          toast(I18N.t("theme_pass_ko"));
+        }
+      });
+      $("home-theme-pass").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); $("btn-home-unlock").click(); }
+      });
+      $("btn-home-logout").addEventListener("click", () => {
+        if (!Store.getActive()) { toast("Aucun profil actif."); return; }
+        Store.logout();
+        renderHome(); renderProfiles();
+        showScreen("home");
+        toast("Déconnecté. Rechoisissez un profil pour jouer.");
+      });
+    }
+    const list = typeof THEMES !== "undefined" ? THEMES : [];
+    sel.innerHTML = list.map((t) =>
+      `<option value="${esc(t.id)}">${esc((t.emoji ? t.emoji + " " : "") + t.nom)}</option>`).join("");
+    sel.value = Store.getSettings().theme || "defaut";
+    const s2 = Store.getSettings();
+    const hintH = $("row-home-lock-hint");
+    if (hintH) hintH.classList.toggle("hidden", !s2.themePass);
+    const rowPassH = $("row-home-theme-pass");
+    if (rowPassH) rowPassH.classList.toggle("hidden", !s2.themePass);
   }
 
   function updateNightBadge() {

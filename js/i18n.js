@@ -25,6 +25,7 @@ const I18N = (function () {
       title_settings: "Réglages",
       title_god: "Mode admin",
       home_kicker: "Les jeux de piste éducatifs",
+      home_theme: "🎨 Thème du jeu",
       home_slogan: "Suis le sentier, résous les énigmes, deviens passeur·se de savoirs !",
       home_offline: "Hors-ligne — tout est prêt",
       home_play: "▶ Commencer le jeu",

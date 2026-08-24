@@ -5,9 +5,9 @@
    Wi-Fi du site, puis disponibles en zone blanche.
    ========================================================= */
 
-const VERSION = "jdpbc-v5";
-const CACHE = "jdpbc-core-v5";
-const RUNTIME = "jdpbc-runtime-v5";
+const VERSION = "jdpbc-v6";
+const CACHE = "jdpbc-core-v6";
+const RUNTIME = "jdpbc-runtime-v6";
 
 const PRECACHE = [
   "./",

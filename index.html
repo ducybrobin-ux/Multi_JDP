@@ -33,7 +33,7 @@
 
   <header id="topbar" class="topbar">
     <button id="btn-home" class="icon-btn" data-i18n-aria="btn_home" aria-label="Accueil">⌂</button>
-    <img id="topbar-logo" class="topbar-logo" src="img/logo-cemea.png" alt="Multi JDP — Jeux de piste éducatifs">
+    <img id="topbar-logo" class="topbar-logo" src="img/logo.svg" alt="Multi JDP — Jeux de piste éducatifs">
     <h1 id="page-title">Multi JDP</h1>
     <button id="btn-voice" class="icon-btn" data-i18n-aria="btn_voice" aria-label="Lire l'écran à voix haute" data-i18n-title="btn_voice" title="Lire l'écran à voix haute">🔊</button>
     <button id="btn-night" class="icon-btn" data-i18n-aria="btn_night" title="Mode nuit" data-i18n-title="btn_night">☾</button>
@@ -44,7 +44,7 @@
     <!-- ================= ACCUEIL ================= -->
     <section class="screen" id="screen-home" data-title="home">
       <div class="hero-card">
-        <img class="hero-logo" src="img/logo-cemea.png" alt="Multi JDP — Jeux de piste éducatifs">
+        <img class="hero-logo" src="img/logo.svg" alt="Multi JDP — Jeux de piste éducatifs">
         <p class="hero-kicker" data-i18n="home_kicker">Les jeux de piste éducatifs</p>
         <h2 class="hero-title">Multi Jeu de Piste</h2>
         <p class="hero-slogan" data-i18n="home_slogan">Suis le sentier, résous les énigmes, deviens passeur·se de savoirs&nbsp;!</p>
@@ -52,6 +52,16 @@
         <button class="btn btn-primary btn-big" id="btn-play" data-i18n="home_play">▶ Commencer le jeu</button>
         <button class="btn btn-ghost" id="btn-open-carnet-home" data-i18n="home_carnet_btn">📔 Mon carnet d'observation</button>
         <p class="hero-meta" id="home-progress"></p>
+        <div class="setting-row" id="row-home-theme">
+          <span data-i18n="home_theme">🎨 Thème du jeu</span>
+          <select id="home-theme"></select>
+        </div>
+        <p class="note hidden" id="row-home-lock-hint" data-i18n="theme_lock_hint">🔒 Changement de thème protégé par le mot de passe organisateur (défaut : Sam).</p>
+        <div class="setting-row hidden" id="row-home-theme-pass">
+          <input type="password" id="home-theme-pass" data-i18n-placeholder="theme_pass_ph" placeholder="Mot de passe organisateur…" autocomplete="off">
+          <button type="button" class="btn btn-ghost btn-mini" id="btn-home-unlock" data-i18n="btn_theme_unlock">🔓 Déverrouiller</button>
+        </div>
+        <button class="btn btn-ghost btn-big hidden" id="btn-home-logout" data-i18n="prof_logout">🚪 Se déconnecter</button>
       </div>
 
       <div class="home-grid">

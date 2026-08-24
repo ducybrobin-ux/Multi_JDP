@@ -863,3 +863,9 @@ body.night .balise.locked circle { fill: #405368; }
 /* ---- Logo CEMÉA Nord-Pas-de-Calais ---- */
 .hero-logo { width: auto; max-width: min(240px, 62%); height: auto; background: rgba(255,255,255,0.92); padding: 10px 16px; }
 body.night .topbar-logo, body.night .hero-logo { background: rgba(255,255,255,0.95); }
+
+/* ---------- Accueil : thème rapide + déconnexion ---------- */
+.hero-card .setting-row { max-width: 420px; width: 100%; margin: 12px auto 0; }
+.hero-card .setting-row select { max-width: 230px; }
+.hero-card #row-home-lock-hint { text-align: center; margin: 6px auto 0; max-width: 420px; }
+.hero-card #btn-home-logout { margin-top: 14px; align-self: center; }
